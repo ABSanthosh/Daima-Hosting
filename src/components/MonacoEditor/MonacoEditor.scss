@@ -1,0 +1,4 @@
+.MonacoEditorWrapper {
+  @include make-flex();
+  @include box();
+}
