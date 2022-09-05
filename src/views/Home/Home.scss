@@ -1,0 +1,4 @@
+.HomeWrapper {
+  @include make-flex();
+  @include box();
+}
