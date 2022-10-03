@@ -136,8 +136,8 @@ function MenuButton({ outRef, showMenu, setShowMenu }) {
               {currentTheme === "github" && <span data-icon="&#60082;" />}
             </button>
           </li>
-          <li className="MenuButton__subMenuBox--disabled">
-            <button disabled onClick={() => setCurrentTheme("blackboard")}>
+          <li className="MenuButton__subMenuBox--item">
+            <button onClick={() => setCurrentTheme("blackboard")}>
               <span>Blackboard</span>
               {currentTheme === "blackboard" && <span data-icon="&#60082;" />}
             </button>

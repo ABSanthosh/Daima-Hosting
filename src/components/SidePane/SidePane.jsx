@@ -9,7 +9,6 @@ function SidePane() {
   const dragRef = React.useRef(null);
   const setSidebarWidth = useStoreActions((actions) => actions.setSidebarWidth);
 
-
   useResize(
     containerRef,
     dragRef,
@@ -28,7 +27,22 @@ function SidePane() {
 
   return (
     <div className="SidePane" ref={containerRef}>
-      <div className="SidePane__sash" ref={dragRef} />
+      <div
+        className="SidePane__sash"
+        ref={dragRef}
+        onClick={(e) => {
+          if (e.detail === 2) {
+            setSidebarWidth(284);
+            dragRef.current.style.left = "284px";
+            containerRef.current.style.width = "284px";
+
+            setTimeout(() => {
+              dragRef.current.style.left = "";
+              containerRef.current.style.width = "";
+            }, 50);
+          }
+        }}
+      />
       <div className="SidePane__content"></div>
     </div>
   );

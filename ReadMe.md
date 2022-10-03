@@ -3,6 +3,8 @@
 Writes code so far :)
 
 _This branch is for production_
+## Hosting
+Project is hosted in https://daima.netlify.app/
 
 ## Local Development Setup
 

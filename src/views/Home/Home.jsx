@@ -14,16 +14,20 @@ function Home() {
   React.useEffect(() => {
     console.log(code);
   }, [code]);
+
   return (
     <div
       className={`Workbench ${currentTheme}`}
       style={{
-        gridTemplateColumns: `48px ${sidebarWidth}px 1fr`,
+        gridTemplateColumns:
+          currentActivity !== null
+            ? `48px ${sidebarWidth}px ${`calc(100% - ${48 + sidebarWidth}px)`}`
+            : `48px ${`calc(100% - 48px)`}`,
       }}
     >
       <ActivityBar />
       {currentActivity !== null && <SidePane />}
-      {/* <MonacoEditor setCode={setCode} code={code} /> */}
+      <MonacoEditor setCode={setCode} code={code} />
     </div>
   );
 }

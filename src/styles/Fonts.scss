@@ -8,6 +8,11 @@
   src: url(/src/assets/Fonts/codicon.ttf) format("truetype");
 }
 
+@font-face {
+  font-family: "JetBrains";
+  src: url(/src/assets/Fonts/JetBrainsMono-Regular.ttf) format("truetype");
+}
+
 [data-icon] {
   font: normal normal normal 16px/1 "codeIcon";
   color: var(--daima-activityBar-inactiveForeground);

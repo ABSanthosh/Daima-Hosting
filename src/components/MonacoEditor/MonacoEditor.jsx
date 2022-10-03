@@ -1,6 +1,6 @@
 import React from "react";
 import "./MonacoEditor.scss";
-import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+// import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { DefineMonacoThemes } from "./ThemeHelper";
 import { useStoreState } from "easy-peasy";
 
@@ -8,6 +8,8 @@ function MonacoEditor({ setCode, code }) {
   const currentTheme = useStoreState((state) => state.theme);
   const [editor, setEditor] = React.useState(null);
   const editorRef = React.useRef(null);
+  const monaco = useStoreState((state) => state.monaco);
+
   const files = {
     "/MonacoEditor.js": `
 const ThisVar = "This Value";
@@ -17,7 +19,6 @@ console.log(ThisVar+ThisVar2);
   };
 
   React.useEffect(() => {
-    //     console.log(editor);
     if (editorRef && !editor) {
       Object.keys(files).forEach((path) =>
         monaco.editor.createModel(
@@ -28,12 +29,19 @@ console.log(ThisVar+ThisVar2);
       );
 
       DefineMonacoThemes(monaco);
-
       const tempEditor = monaco.editor.create(editorRef.current, {
         value: code,
         language: "javascript",
         theme: currentTheme,
+        automaticLayout: true,
         model: null,
+        fontSize: 14,
+        fontFamily: "JetBrains",
+        fontLigatures: true,
+        bracketPairColorization: { enabled: true },
+        autoClosingBrackets: "beforeWhitespace",
+        useShadowDOM: true,
+        trimAutoWhitespace: true,
       });
 
       tempEditor.setModel(monaco.editor.getModels()[0]);
