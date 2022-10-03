@@ -1,4 +1,5 @@
 .MenuButton {
+  z-index: 10;
   &__menu {
     @include box(100%, 35px);
     @include make-flex();
@@ -11,6 +12,7 @@
 
   &__menuBox,
   &__subMenuBox {
+    z-index: 10;
     top: 9px;
     left: 56px;
     position: fixed;
