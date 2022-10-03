@@ -1,0 +1,31 @@
+@font-face {
+  font-family: "SF-Pro";
+  src: url(/src/assets/Fonts/SF-Pro.otf) format("otf");
+}
+
+@font-face {
+  font-family: "codeIcon";
+  src: url(/src/assets/Fonts/codicon.ttf) format("truetype");
+}
+
+[data-icon] {
+  font: normal normal normal 16px/1 "codeIcon";
+  color: var(--daima-activityBar-inactiveForeground);
+  text-decoration: none;
+  text-rendering: auto;
+  text-align: center;
+  text-transform: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+
+  &::before {
+    content: attr(data-icon);
+  }
+
+  &:hover {
+    color: var(--daima-activityBar-foreground);
+  }
+}
