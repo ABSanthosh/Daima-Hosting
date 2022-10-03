@@ -1,4 +1,33 @@
-.ActivityBarWrapper {
+.ActivityBar {
   @include box(48px);
   background-color: var(--daima-activityBar-background);
+
+  &__actionList {
+    @include make-flex();
+    list-style: none;
+    @include box(100%, fit-content);
+
+    &--item,
+    &--active {
+      @include box(47px, 48px);
+      @include make-flex();
+      border-left: 2.5px solid transparent;
+      margin-left: -1px;
+      color: var(--daima-tab-inactiveForeground);
+      cursor: pointer;
+      button {
+        @include box();
+        outline: none;
+        border: none;
+        cursor: inherit;
+        background-color: transparent;
+        font-size: 24px;
+      }
+    }
+
+    &--active {
+      border-left: 2.5px solid var(--daima-editorError-foreground);
+      color: var(--daima-tab-activeForeground);
+    }
+  }
 }

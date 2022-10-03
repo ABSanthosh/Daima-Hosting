@@ -2,10 +2,16 @@ import { createStore, action } from "easy-peasy";
 
 const Store = createStore({
   theme: "github",
+  activityItem: "explorer",
 
   setTheme: action((state, payload) => {
     state.theme = payload;
   }),
+  setActivityItem: action((state, payload) => {
+    state.activityItem = payload;
+  }),
+
+  
   // todo: [
   //   { id: 1, text: "Learn React", completed: true },
   //   { id: 2, text: "Learn Redux", completed: false },
