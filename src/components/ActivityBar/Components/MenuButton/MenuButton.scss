@@ -1,0 +1,86 @@
+.MenuButton {
+  &__menu {
+    @include box(100%, 35px);
+    @include make-flex();
+    cursor: pointer;
+
+    &--active {
+      color: var(--daima-activityBar-foreground) !important;
+    }
+  }
+
+  &__menuBox,
+  &__subMenuBox {
+    top: 9px;
+    left: 56px;
+    position: fixed;
+    overflow: hidden;
+    border-radius: 5px;
+    color: rgb(240, 240, 240);
+    background-color: var(--daima-menu-background);
+    box-shadow: var(--daima-widget-shadow) 0px 2px 8px;
+    // min-width: 185px;
+    width: 185px;
+
+    height: auto;
+    list-style: none;
+
+    padding: 7px 0;
+
+    &--item,
+    &--active,
+    &--disabled {
+      user-select: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+
+      list-style: none;
+      position: relative;
+      color: var(--daima-foreground);
+      cursor: pointer;
+      @include box(100%, 26px);
+      &:hover {
+        background-color: var(--daima-menu-selectionBackground);
+
+        & button > :last-child {
+          color: var(--daima-activityBar-foreground);
+        }
+      }
+      button {
+        @include box();
+        color: inherit;
+        cursor: inherit;
+        background-color: transparent;
+        border: none;
+        font-size: 14px;
+        outline: none;
+        padding: 0 10px 0 15px;
+        @include make-flex($dir: row, $just: space-between);
+      }
+    }
+
+    &--separator {
+      border-radius: 0;
+      padding: 0;
+      @include box(100%, 1px);
+      margin: 5px 0;
+      background-color: var(--daima-menu-separatorBackground);
+    }
+
+    &--active {
+      background-color: var(--daima-menu-selectionBackground);
+    }
+
+    &--disabled {
+      color: var(--daima-disabledForeground);
+      cursor: not-allowed;
+      &:hover {
+        background-color: transparent;
+
+        & button > :last-child {
+          color: var(--daima-disabledForeground);
+        }
+      }
+    }
+  }
+}
