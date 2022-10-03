@@ -1,0 +1,26 @@
+.SidePane {
+  position: relative;
+  background-color: var(--daima-sideBar-background);
+  color: var(--daima-sideBar-foreground);
+  border-right: 1px solid var(--daima-sideBar-border);
+
+  &__sash {
+    position: absolute;
+    right: -2px;
+    top: 0;
+    @include box(4px);
+    cursor: ew-resize;
+    z-index: 2;
+    transition: background-color 0.2s ease-in-out;
+    display: flex;
+
+    &:active,
+    &:hover {
+      background-color: var(--daima-sash-hoverBorder);
+    }
+  }
+
+  &__content {
+    @include box();
+  }
+}
