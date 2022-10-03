@@ -1,8 +1,11 @@
 import React from "react";
 import "./MonacoEditor.scss";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+import { DefineMonacoThemes } from "./ThemeHelper";
+import { useStoreState } from "easy-peasy";
 
 function MonacoEditor({ setCode, code }) {
+  const currentTheme = useStoreState((state) => state.theme);
   const [editor, setEditor] = React.useState(null);
   const editorRef = React.useRef(null);
   const files = {
@@ -23,15 +26,17 @@ console.log(ThisVar+ThisVar2);
           new monaco.Uri().with({ path })
         )
       );
+
+      DefineMonacoThemes(monaco);
+
       const tempEditor = monaco.editor.create(editorRef.current, {
         value: code,
         language: "javascript",
-        theme: "vs-dark",
+        theme: currentTheme,
         model: null,
       });
 
       tempEditor.setModel(monaco.editor.getModels()[0]);
-
       setEditor(tempEditor);
     }
     return () => editor?.dispose();
