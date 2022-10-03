@@ -2,7 +2,6 @@
   display: grid;
   @include box();
   position: relative;
-  background-color: var(--daima-peekViewResult-background);
-  grid-template-columns: 48px 1fr 1fr;
+  background-color: var(--daima-editorPane-background);
   color: var(--daima-foreground);
 }
