@@ -1,6 +1,7 @@
 .ActivityBar {
   @include box(48px);
   background-color: var(--daima-activityBar-background);
+  border-right: 1px solid var(--daima-activityBar-border);
 
   &__actionList {
     @include make-flex();
@@ -20,6 +21,7 @@
         outline: none;
         border: none;
         cursor: inherit;
+        color: inherit;
         background-color: transparent;
         font-size: 24px;
       }
