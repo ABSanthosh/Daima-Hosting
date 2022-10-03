@@ -2,6 +2,9 @@
 
 Writes code so far :)
 
+## Hosting
+Project is hosted in https://daima.netlify.app/
+
 ## Local Development Setup
 
 1. git clone https://github.com/ABSanthosh/Daima.git
