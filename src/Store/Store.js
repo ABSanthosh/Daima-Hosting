@@ -1,5 +1,9 @@
 import { createStore, action, persist } from "easy-peasy";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+import { tree } from "../../tree";
+import { tree2 } from "../../tree2";
+
+const folderStructure = tree2;
 
 const Store = createStore(
   persist(
@@ -8,6 +12,18 @@ const Store = createStore(
       theme: "github",
       activityItem: "explorer",
       sidebarWidth: 284,
+
+      selectedFolder: folderStructure,
+
+      selectedFile: null,
+
+      setSelectedFile: action((state, payload) => {
+        state.selectedFile = payload;
+      }),
+
+      setSelectedFolderState: action((state, payload) => {
+        state.selectedFolder = payload;
+      }),
 
       setTheme: action((state, payload) => {
         state.theme = payload;

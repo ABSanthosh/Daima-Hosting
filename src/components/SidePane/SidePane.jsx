@@ -4,7 +4,7 @@ import useResize from "../../hooks/useResize";
 
 import "./SidePane.scss";
 
-function SidePane() {
+function SidePane({ children, title }) {
   const containerRef = React.useRef(null);
   const dragRef = React.useRef(null);
   const setSidebarWidth = useStoreActions((actions) => actions.setSidebarWidth);
@@ -43,7 +43,10 @@ function SidePane() {
           }
         }}
       />
-      <div className="SidePane__content"></div>
+      <div className="SidePane__header">
+        <h2>{title}</h2>
+      </div>
+      <div className="SidePane__content">{children}</div>
     </div>
   );
 }
