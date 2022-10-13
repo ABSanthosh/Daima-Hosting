@@ -1,6 +1,7 @@
 import { useStoreState } from "easy-peasy";
 import React from "react";
 import ActivityBar from "../../components/ActivityBar/ActivityBar";
+import FolderTree from "../../components/FolderTree/FolderTree";
 import MonacoEditor from "../../components/MonacoEditor/MonacoEditor";
 import SidePane from "../../components/SidePane/SidePane";
 import "./Home.scss";
@@ -10,10 +11,10 @@ function Home() {
   const currentTheme = useStoreState((state) => state.theme);
   const currentActivity = useStoreState((state) => state.activityItem);
   const sidebarWidth = useStoreState((state) => state.sidebarWidth);
-
-  React.useEffect(() => {
-    console.log(code);
-  }, [code]);
+  const folderStructure = useStoreState((state) => state.selectedFolder);
+  // React.useEffect(() => {
+  //   console.log(code);
+  // }, [code]);
 
   return (
     <div
@@ -26,7 +27,16 @@ function Home() {
       }}
     >
       <ActivityBar />
-      {currentActivity !== null && <SidePane />}
+      {currentActivity !== null && (
+        <SidePane title={currentActivity}>
+          {currentActivity === "explorer" && (
+            <FolderTree
+              original={folderStructure}
+              folderStructure={folderStructure}
+            />
+          )}
+        </SidePane>
+      )}
       <MonacoEditor setCode={setCode} code={code} />
     </div>
   );

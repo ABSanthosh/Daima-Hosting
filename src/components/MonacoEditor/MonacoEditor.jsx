@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./MonacoEditor.scss";
 // import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { DefineMonacoThemes } from "./ThemeHelper";
@@ -6,26 +6,18 @@ import { useStoreState } from "easy-peasy";
 
 function MonacoEditor({ setCode, code }) {
   const currentTheme = useStoreState((state) => state.theme);
-  const [editor, setEditor] = React.useState(null);
-  const editorRef = React.useRef(null);
+  const [editor, setEditor] = useState(null);
+  const editorRef = useRef(null);
   const monaco = useStoreState((state) => state.monaco);
 
-  const files = {
-    "/MonacoEditor.js": `
-const ThisVar = "This Value";
-const ThisVar2 = "This Value 2";
-console.log(ThisVar+ThisVar2);    
-    `,
-  };
+  const selectedFile = useStoreState((state) => state.selectedFile);
 
-  React.useEffect(() => {
-    if (editorRef && !editor) {
-      Object.keys(files).forEach((path) =>
-        monaco.editor.createModel(
-          files[path],
-          "javascript",
-          new monaco.Uri().with({ path })
-        )
+  useEffect(() => {
+    if (editorRef && !editor & (selectedFile !== null)) {
+      monaco.editor.createModel(
+        selectedFile.content,
+        "javascript",
+        new monaco.Uri().with({ path: selectedFile.path })
       );
 
       DefineMonacoThemes(monaco);
@@ -50,7 +42,13 @@ console.log(ThisVar+ThisVar2);
     return () => editor?.dispose();
   }, [editorRef.current]);
 
-  React.useEffect(() => {
+  useEffect(() => {
+    if (monaco.editor.getModels().length > 0) {
+      monaco.editor.getModels()[0].setValue(selectedFile.content);
+    }
+  }, [selectedFile]);
+
+  useEffect(() => {
     editor?.getModel().onDidChangeContent((e) => {
       setCode(editor?.getModel().getValue());
     });
