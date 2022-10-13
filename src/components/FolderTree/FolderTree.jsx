@@ -2,13 +2,17 @@ import { useStoreActions } from "easy-peasy";
 import React, { useState } from "react";
 import "./FolderTree.scss";
 
-function File({ name, depth }) {
+function File({ folderStructure, depth }) {
+  const setSelectedFile = useStoreActions((action) => action.setSelectedFile);
   return (
     <div
       className="File"
       tabIndex={1}
       style={{
         paddingLeft: `${depth * 9}px`,
+      }}
+      onClick={() => {
+        setSelectedFile(folderStructure);
       }}
     >
       <div
@@ -22,7 +26,7 @@ function File({ name, depth }) {
         ))}
       </div>
       <span data-lang="&#57379;">
-        <p>{name}</p>
+        <p>{folderStructure.name}</p>
       </span>
     </div>
   );
@@ -125,7 +129,7 @@ function FolderTree({ folderStructure, depth = 1, original }) {
     );
   }
   if (folderStructure.type === "file") {
-    return <File name={folderStructure.name} depth={depth} />;
+    return <File folderStructure={folderStructure} depth={depth} />;
   }
 }
 

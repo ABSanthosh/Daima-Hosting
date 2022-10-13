@@ -9,8 +9,52 @@
 }
 
 @font-face {
+  font-family: "seti";
+  src: url(/src/assets/Fonts/seti.woff) format("woff");
+}
+
+@font-face {
   font-family: "JetBrains";
   src: url(/src/assets/Fonts/JetBrainsMono-Regular.ttf) format("truetype");
+}
+
+[data-lang] {
+  font: normal normal normal 16px/1 "seti";
+  color: var(--daima-activityBar-inactiveForeground);
+  text-decoration: none;
+  text-rendering: auto;
+  text-align: center;
+  text-transform: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  background-image: unset;
+  font-size: 150%;
+
+  vertical-align: top;
+  flex-shrink: 0;
+
+  @include make-flex($dir: row, $just: flex-start);
+  gap: 4px;
+  padding-left: 4px;
+
+  & > p {
+    font-family: "SF-Pro", sans-serif;
+    color: var(--daima-foreground);
+    font-size: 16px;
+  }
+
+  &::before {
+    content: attr(data-lang);
+    @include box(16px, 16px);
+    @include make-flex();
+  }
+
+  &:hover {
+    color: var(--daima-activityBar-foreground);
+  }
 }
 
 [data-icon] {
@@ -25,6 +69,11 @@
   user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
+
+  & > p {
+    font-family: "SF-Pro", sans-serif;
+    color: var(--daima-foreground);
+  }
 
   &::before {
     content: attr(data-icon);

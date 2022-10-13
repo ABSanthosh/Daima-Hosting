@@ -15,6 +15,12 @@ const Store = createStore(
 
       selectedFolder: folderStructure,
 
+      selectedFile: null,
+
+      setSelectedFile: action((state, payload) => {
+        state.selectedFile = payload;
+      }),
+
       setSelectedFolderState: action((state, payload) => {
         state.selectedFolder = payload;
       }),
