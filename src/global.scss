@@ -7,7 +7,28 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+
 }
+
+::-webkit-scrollbar {
+  background: transparent;
+}
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--daima-scrollbarSlider-background);
+
+  &:hover {
+    background: var(--daima-scrollbarSlider-hoverBackground);
+    cursor: pointer;
+  }
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
 
 #root,
 html,
