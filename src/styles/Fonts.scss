@@ -44,6 +44,9 @@
     font-family: "SF-Pro", sans-serif;
     color: var(--daima-foreground);
     font-size: 16px;
+
+    @include make-flex($just:flex-start, $dir:row);
+    height: 100%;
   }
 
   &::before {
@@ -73,6 +76,9 @@
   & > p {
     font-family: "SF-Pro", sans-serif;
     color: var(--daima-foreground);
+
+    @include make-flex($just:flex-start, $dir:row);
+    height: 100%;
   }
 
   &::before {
