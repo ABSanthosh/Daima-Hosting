@@ -1,6 +1,7 @@
 import { useStoreActions, useStoreState } from "easy-peasy";
 import React from "react";
 import useOnClickOutside from "../../../../hooks/useOnClickOutside";
+import { CreateFolderMap, OpenFile } from "../../../../utils/FileAccess";
 import "./MenuButton.scss";
 
 function MenuButton({ outRef, showMenu, setShowMenu }) {
@@ -11,6 +12,9 @@ function MenuButton({ outRef, showMenu, setShowMenu }) {
 
   const currentTheme = useStoreState((state) => state.theme);
   const setCurrentTheme = useStoreActions((actions) => actions.setTheme);
+  const setSelectedFolderState = useStoreActions(
+    (actions) => actions.setSelectedFolderState
+  );
 
   useOnClickOutside(outRef, () => {
     setShowMenu(false);
@@ -95,10 +99,24 @@ function MenuButton({ outRef, showMenu, setShowMenu }) {
           }}
         >
           <li className="MenuButton__subMenuBox--item">
-            <button>Open File</button>
+            <button
+              onClick={async () => {
+                await OpenFile();
+              }}
+            >
+              Open File
+            </button>
           </li>
           <li className="MenuButton__subMenuBox--item">
-            <button>Open Folder</button>
+            <button
+              onClick={async () => {
+                const root = await CreateFolderMap();
+                console.log(root);
+                setSelectedFolderState(root);
+              }}
+            >
+              Open Folder
+            </button>
           </li>
           <li className="MenuButton__subMenuBox--separator" />
           <li className="MenuButton__subMenuBox--item">

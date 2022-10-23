@@ -1,9 +1,21 @@
 import { useStoreActions } from "easy-peasy";
 import React, { useState } from "react";
+import { getFileContents } from "../../utils/FileAccess";
 import "./FolderTree.scss";
+import SetiMap from "../../assets/Maps/SetiMap.json";
 
 function File({ folderStructure, depth }) {
   const setSelectedFile = useStoreActions((action) => action.setSelectedFile);
+  const setSelectedFileContent = useStoreActions(
+    (action) => action.setSelectedFileContent
+  );
+
+  const iconChar =
+    SetiMap["iconDefinitions"][SetiMap["languageIds"][folderStructure.ext]];
+  const iconOctal = String.fromCharCode(
+    parseInt(iconChar?.fontCharacter.replace("\\", ""), 16)
+  );
+
   return (
     <div
       className="File"
@@ -11,8 +23,9 @@ function File({ folderStructure, depth }) {
       style={{
         paddingLeft: `${depth * 9}px`,
       }}
-      onClick={() => {
+      onClick={async () => {
         setSelectedFile(folderStructure);
+        setSelectedFileContent(await getFileContents(folderStructure.handler));
       }}
     >
       <div
@@ -25,13 +38,20 @@ function File({ folderStructure, depth }) {
           <i data-intent key={index} />
         ))}
       </div>
-      <span data-lang="&#57379;">
+      <span
+        data-lang={
+          iconChar !== undefined ? iconOctal : String.fromCharCode(57379)
+        }
+        style={{
+          color: iconChar !== undefined ? iconChar.fontColor : "",
+        }}
+      >
         <p>{folderStructure.name}</p>
       </span>
     </div>
   );
 }
-
+// `&#${iconChar !== undefined ? iconOctal : 57379};`
 function Folder({ folderStructure, depth, original }) {
   const [open, setOpen] = useState(folderStructure.open);
   const [isFocused, setIsFocused] = useState(false);
