@@ -30,10 +30,16 @@ function Home() {
       {currentActivity !== null && (
         <SidePane title={currentActivity}>
           {currentActivity === "explorer" && (
-            <FolderTree
-              original={folderStructure}
-              folderStructure={folderStructure}
-            />
+            <>
+              {folderStructure ? (
+                <FolderTree
+                  original={folderStructure}
+                  folderStructure={folderStructure}
+                />
+              ) : (
+                "Open Folder"
+              )}
+            </>
           )}
         </SidePane>
       )}

@@ -21,8 +21,13 @@
   }
 
   &__content {
-    @include box();
+    @include box($height: calc(100vh - 35px));
     padding-top: 5px;
+    overflow: auto;
+
+    &--inner {
+      margin-bottom: 15px;
+    }
   }
 
   &__header {
@@ -39,6 +44,9 @@
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+      user-select: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
     }
   }
 }

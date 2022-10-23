@@ -1,7 +1,7 @@
 import { createStore, action, persist } from "easy-peasy";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
-import { tree } from "../../tree";
 import { tree2 } from "../../tree2";
+import storage from "../utils/StorageEngine";
 
 const folderStructure = tree2;
 
@@ -13,12 +13,17 @@ const Store = createStore(
       activityItem: "explorer",
       sidebarWidth: 284,
 
-      selectedFolder: folderStructure,
+      selectedFolder: null,
 
       selectedFile: null,
+      selectedFileContent: null,
 
       setSelectedFile: action((state, payload) => {
         state.selectedFile = payload;
+      }),
+
+      setSelectedFileContent: action((state, payload) => {
+        state.selectedFileContent = payload;
       }),
 
       setSelectedFolderState: action((state, payload) => {
@@ -38,7 +43,8 @@ const Store = createStore(
     },
     {
       deny: ["monaco"],
-    }
+      storage: storage("diama-editor"),
+    },
   )
 );
 

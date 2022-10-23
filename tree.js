@@ -2,7 +2,7 @@ const tree = {
   path: "/home/santhosh/Desktop/Projects/JavaScript/2022/20_Editor/Diama/src",
   name: "src",
   type: "directory",
-  open: true,
+  open: true, 
   children: [
     {
       path: "/home/santhosh/Desktop/Projects/JavaScript/2022/20_Editor/Diama/src/App.jsx",

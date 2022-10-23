@@ -1,7 +1,6 @@
 import { useStoreActions } from "easy-peasy";
 import React from "react";
 import useResize from "../../hooks/useResize";
-
 import "./SidePane.scss";
 
 function SidePane({ children, title }) {
@@ -46,7 +45,13 @@ function SidePane({ children, title }) {
       <div className="SidePane__header">
         <h2>{title}</h2>
       </div>
-      <div className="SidePane__content">{children}</div>
+      <div className="SidePane__content">
+        <div
+          className="SidePane__content--inner"
+        >
+          {children}
+        </div>
+      </div>
     </div>
   );
 }
