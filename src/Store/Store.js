@@ -13,7 +13,7 @@ const Store = createStore(
       activityItem: "explorer",
       sidebarWidth: 284,
 
-      selectedFolder: folderStructure,
+      selectedFolder: null,
 
       selectedFile: null,
       selectedFileContent: null,

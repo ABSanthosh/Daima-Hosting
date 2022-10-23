@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { getFileContents } from "../../utils/FileAccess";
 import "./FolderTree.scss";
 import SetiMap from "../../assets/Maps/SetiMap.json";
-import Lang from "../../assets/Maps/ExtToMap.json";
 
 function File({ folderStructure, depth }) {
   const setSelectedFile = useStoreActions((action) => action.setSelectedFile);
@@ -16,8 +15,6 @@ function File({ folderStructure, depth }) {
   const iconOctal = String.fromCharCode(
     parseInt(iconChar?.fontCharacter.replace("\\", ""), 16)
   );
-
-  // console.log(Lang[folderStructure.ext] ? Lang[folderStructure.ext][0] : "");
 
   return (
     <div

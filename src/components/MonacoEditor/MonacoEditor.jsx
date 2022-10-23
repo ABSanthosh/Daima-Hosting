@@ -47,6 +47,7 @@ function MonacoEditor({ setCode, code }) {
   }, [editorRef.current]);
 
   useEffect(() => {
+    // console.log(selectedFile)
     if (monaco.editor.getModels().length > 0) {
       monaco.editor.getModels()[0].setValue(selectedFileContent);
       monaco.editor.setModelLanguage(
