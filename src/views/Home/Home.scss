@@ -5,4 +5,10 @@
   background-color: var(--daima-editorPane-background);
   color: var(--daima-foreground);
   overflow: hidden;
+
+  &__right {
+    display: grid;
+    grid-template-rows: 35px 22px 1fr;
+    grid-template-columns: 100%;
+  }
 }

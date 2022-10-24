@@ -1,5 +1,5 @@
 import { useStoreActions } from "easy-peasy";
-import React from "react";
+import React, { useState } from "react";
 import useResize from "../../hooks/useResize";
 import "./SidePane.scss";
 
@@ -7,7 +7,7 @@ function SidePane({ children, title }) {
   const containerRef = React.useRef(null);
   const dragRef = React.useRef(null);
   const setSidebarWidth = useStoreActions((actions) => actions.setSidebarWidth);
-
+  const [isMouseOver, setMouseOver] = useState(false);
   useResize(
     containerRef,
     dragRef,
@@ -45,12 +45,15 @@ function SidePane({ children, title }) {
       <div className="SidePane__header">
         <h2>{title}</h2>
       </div>
-      <div className="SidePane__content">
-        <div
-          className="SidePane__content--inner"
-        >
-          {children}
-        </div>
+      <div
+        className="SidePane__content"
+        onMouseEnter={() => setMouseOver(true)}
+        onMouseLeave={() => setMouseOver(false)}
+        style={{
+          overflow: isMouseOver ? "auto" : "hidden",
+        }}
+      >
+        <div className="SidePane__content--inner">{children}</div>
       </div>
     </div>
   );

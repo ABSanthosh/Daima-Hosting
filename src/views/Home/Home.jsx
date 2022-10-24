@@ -1,9 +1,11 @@
 import { useStoreState } from "easy-peasy";
 import React from "react";
 import ActivityBar from "../../components/ActivityBar/ActivityBar";
+import BreadCrumbs from "../../components/BreadCrumbs/BreadCrumbs";
 import FolderTree from "../../components/FolderTree/FolderTree";
 import MonacoEditor from "../../components/MonacoEditor/MonacoEditor";
 import SidePane from "../../components/SidePane/SidePane";
+import Tabs from "../../components/Tabs/Tabs";
 import "./Home.scss";
 
 function Home() {
@@ -12,9 +14,7 @@ function Home() {
   const currentActivity = useStoreState((state) => state.activityItem);
   const sidebarWidth = useStoreState((state) => state.sidebarWidth);
   const folderStructure = useStoreState((state) => state.selectedFolder);
-  // React.useEffect(() => {
-  //   console.log(code);
-  // }, [code]);
+  const currentFile = useStoreState((state) => state.currentFile);
 
   return (
     <div
@@ -43,7 +43,11 @@ function Home() {
           )}
         </SidePane>
       )}
-      <MonacoEditor setCode={setCode} code={code} />
+      <div className="Workbench__right">
+        <Tabs folderStructure={folderStructure} />
+        <BreadCrumbs currentFile={currentFile} />
+        <MonacoEditor setCode={setCode} code={code} />
+      </div>
     </div>
   );
 }
