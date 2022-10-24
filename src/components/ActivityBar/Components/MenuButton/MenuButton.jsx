@@ -15,6 +15,8 @@ function MenuButton({ outRef, showMenu, setShowMenu }) {
   const setSelectedFolderState = useStoreActions(
     (actions) => actions.setSelectedFolderState
   );
+  const toggleAutoSave = useStoreActions((actions) => actions.toggleAutoSave);
+  const isAutoSave = useStoreState((state) => state.isAutoSave);
 
   useOnClickOutside(outRef, () => {
     setShowMenu(false);
@@ -126,9 +128,9 @@ function MenuButton({ outRef, showMenu, setShowMenu }) {
             <button>Save As</button>
           </li>
           <li className="MenuButton__subMenuBox--item">
-            <button>
+            <button onClick={() => toggleAutoSave()}>
               <span>Auto Save</span>
-              <span data-icon="&#60082;" />
+              {isAutoSave && <span data-icon="&#60082;" />}
             </button>
           </li>
         </ul>

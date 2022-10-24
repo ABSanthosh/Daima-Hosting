@@ -1,29 +1,53 @@
-import { createStore, action, persist } from "easy-peasy";
-import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
-import { tree2 } from "../../tree2";
+import { createStore, action, persist, debug } from "easy-peasy";
 import storage from "../utils/StorageEngine";
+import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 
-const folderStructure = tree2;
+window.monaco = monaco;
 
 const Store = createStore(
   persist(
     {
-      monaco: monaco,
+      // monaco: monaco,
       theme: "github",
       activityItem: "explorer",
       sidebarWidth: 284,
 
       selectedFolder: null,
 
-      selectedFile: null,
-      selectedFileContent: null,
+      selectedFiles: [],
+      selectedFileContent: [],
+      currentFile: { path: "" },
+      isAutoSave: false,
 
-      setSelectedFile: action((state, payload) => {
-        state.selectedFile = payload;
+      toggleAutoSave: action((state) => {
+        state.isAutoSave = !state.isAutoSave;
+      }),
+      setCurrentFile: action((state, payload) => {
+        state.currentFile = payload;
+      }),
+
+      setSelectedFiles: action((state, payload) => {
+        if (
+          state.selectedFiles.find((item) => item.path === payload.path) ===
+          undefined
+        ) {
+          state.selectedFiles = [...state.selectedFiles, payload];
+        }
+      }),
+
+      removeSelectedFile: action((state, payload) => {
+        // console.log(
+        //   debug(
+        //     state.selectedFiles.filter((item) => item.path === payload.path)
+        //   )
+        // );
+        state.selectedFiles = state.selectedFiles.filter(
+          (item) => item.path !== payload.path
+        );
       }),
 
       setSelectedFileContent: action((state, payload) => {
-        state.selectedFileContent = payload;
+        state.selectedFileContent = [...state.selectedFileContent, payload];
       }),
 
       setSelectedFolderState: action((state, payload) => {
@@ -32,7 +56,7 @@ const Store = createStore(
 
       setTheme: action((state, payload) => {
         state.theme = payload;
-        state.monaco.editor.setTheme(payload);
+        window.monaco.editor.setTheme(payload);
       }),
       setActivityItem: action((state, payload) => {
         state.activityItem = payload;
@@ -42,9 +66,14 @@ const Store = createStore(
       }),
     },
     {
-      deny: ["monaco"],
+      deny: [
+        "selectedFolder",
+        "selectedFiles",
+        "selectedFileContent",
+        "currentFile",
+      ],
       storage: storage("diama-editor"),
-    },
+    }
   )
 );
 

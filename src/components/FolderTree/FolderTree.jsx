@@ -3,9 +3,12 @@ import React, { useState } from "react";
 import { getFileContents } from "../../utils/FileAccess";
 import "./FolderTree.scss";
 import SetiMap from "../../assets/Maps/SetiMap.json";
+import { handleEditorContent } from "../../utils/MonacoModel";
 
 function File({ folderStructure, depth }) {
-  const setSelectedFile = useStoreActions((action) => action.setSelectedFile);
+
+  const setSelectedFiles = useStoreActions((action) => action.setSelectedFiles);
+  const setCurrentFile = useStoreActions((action) => action.setCurrentFile);
   const setSelectedFileContent = useStoreActions(
     (action) => action.setSelectedFileContent
   );
@@ -24,8 +27,11 @@ function File({ folderStructure, depth }) {
         paddingLeft: `${depth * 9}px`,
       }}
       onClick={async () => {
-        setSelectedFile(folderStructure);
-        setSelectedFileContent(await getFileContents(folderStructure.handler));
+        setSelectedFiles(folderStructure);
+        setCurrentFile(folderStructure);
+        const content = await getFileContents(folderStructure.handler);
+        setSelectedFileContent(content);
+        handleEditorContent(folderStructure, content);
       }}
     >
       <div
@@ -51,7 +57,7 @@ function File({ folderStructure, depth }) {
     </div>
   );
 }
-// `&#${iconChar !== undefined ? iconOctal : 57379};`
+
 function Folder({ folderStructure, depth, original }) {
   const [open, setOpen] = useState(folderStructure.open);
   const [isFocused, setIsFocused] = useState(false);
