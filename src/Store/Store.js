@@ -11,6 +11,7 @@ const Store = createStore(
       theme: "github",
       activityItem: "explorer",
       sidebarWidth: 284,
+      sidePanelState: true,
 
       selectedFolder: null,
 
@@ -18,10 +19,20 @@ const Store = createStore(
       selectedFileContent: [],
       currentFile: { path: "" },
       isAutoSave: false,
+      isFullScreen: false,
 
       toggleAutoSave: action((state) => {
         state.isAutoSave = !state.isAutoSave;
       }),
+
+      toggleFullScreenState: action((state) => {
+        state.isFullScreen = !state.isFullScreen;
+      }),
+
+      toggleSidePanel: action((state) => {
+        state.sidePanelState = !state.sidePanelState;
+      }),
+
       setCurrentFile: action((state, payload) => {
         state.currentFile = payload;
       }),
@@ -36,11 +47,6 @@ const Store = createStore(
       }),
 
       removeSelectedFile: action((state, payload) => {
-        // console.log(
-        //   debug(
-        //     state.selectedFiles.filter((item) => item.path === payload.path)
-        //   )
-        // );
         state.selectedFiles = state.selectedFiles.filter(
           (item) => item.path !== payload.path
         );
