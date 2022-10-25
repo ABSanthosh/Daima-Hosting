@@ -44,7 +44,13 @@ function MenuButton({ outRef, showMenu, setShowMenu }) {
         data-icon="&#60308;"
       />
       {showMenu && (
-        <ul className="MenuButton__menuBox">
+        <ul
+          className="MenuButton__menuBox"
+          style={{
+            borderRadius:
+              treeStates.file || treeStates.theme ? "5px 0 0 5px" : "",
+          }}
+        >
           <li
             className={`MenuButton__menuBox--${
               treeStates.file ? "active" : "item"
@@ -97,7 +103,9 @@ function MenuButton({ outRef, showMenu, setShowMenu }) {
         <ul
           className="MenuButton__subMenuBox"
           style={{
-            left: "250px",
+            left: "191px",
+            borderRadius: "0 5px 5px 5px",
+            width: "250px",
           }}
         >
           <li className="MenuButton__subMenuBox--item">
@@ -106,18 +114,19 @@ function MenuButton({ outRef, showMenu, setShowMenu }) {
                 await OpenFile();
               }}
             >
-              Open File
+              <p>Open File</p>
+              <pre>Ctrl+O</pre>
             </button>
           </li>
           <li className="MenuButton__subMenuBox--item">
             <button
               onClick={async () => {
                 const root = await CreateFolderMap();
-                console.log(root);
                 setSelectedFolderState(root);
               }}
             >
-              Open Folder
+              <p>Open Folder</p>
+              <pre>Ctrl+Shift+O</pre>
             </button>
           </li>
           <li className="MenuButton__subMenuBox--separator" />
@@ -127,8 +136,8 @@ function MenuButton({ outRef, showMenu, setShowMenu }) {
           <li className="MenuButton__subMenuBox--item">
             <button>Save As</button>
           </li>
-          <li className="MenuButton__subMenuBox--item">
-            <button onClick={() => toggleAutoSave()}>
+          <li className="MenuButton__subMenuBox--disabled">
+            <button disabled onClick={() => toggleAutoSave()}>
               <span>Auto Save</span>
               {isAutoSave && <span data-icon="&#60082;" />}
             </button>
@@ -139,7 +148,8 @@ function MenuButton({ outRef, showMenu, setShowMenu }) {
         <ul
           className="MenuButton__subMenuBox"
           style={{
-            left: "250px",
+            left: "191px",
+            borderRadius: "0 5px 5px 5px",
           }}
         >
           <li className="MenuButton__subMenuBox--item">
