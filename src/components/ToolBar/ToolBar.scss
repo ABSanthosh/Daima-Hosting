@@ -1,0 +1,39 @@
+.ToolBar {
+  @include make-flex($dir: row, $just: space-between);
+  @include box(100%, 30px);
+  // gap: 5px;
+  border-bottom: 1.5px solid var(--daima-tree-indentGuidesStroke);
+  background-color: var(--daima-editorGroupHeader-tabsBackground);
+  padding-left: 7px;
+  img {
+    @include box(30px, 30px);
+    padding: 6px;
+  }
+
+  &__left,
+  &__right {
+    @include make-flex($dir: row, $just: flex-start);
+  }
+
+  &__icon {
+    &--sidePanelToggle,
+    &--toggleFullScreen {
+      @include box(30px, 30px);
+      // padding: 6px;
+      @include make-flex();
+      cursor: pointer;
+      &:hover {
+        background-color: var(--daima-toolbar-hoverBackground);
+      }
+    }
+
+    &--active {
+      &::before {
+        background-color: var(--daima-toolbar-hoverBackground);
+        padding: 2.5px;
+        border-radius: 3px;
+        color: var(--daima-activityBar-foreground);
+      }
+    }
+  }
+}
