@@ -1,8 +1,8 @@
 .TabsWrapper {
   @include box(100%, 35px);
-  // border-bottom: 1.5px solid var(--daima-tree-indentGuidesStroke);
   @include make-flex($dir: row, $just: flex-start);
   overflow-x: auto;
+  // border-bottom: 1.5px solid var(--daima-tree-indentGuidesStroke);
   background-color: var(--daima-editorGroupHeader-tabsBackground);
 
   &::-webkit-scrollbar {
