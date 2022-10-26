@@ -115,7 +115,7 @@ function MenuButton({ outRef, showMenu, setShowMenu }) {
               }}
             >
               <p>Open File</p>
-              <pre>Ctrl+O</pre>
+              <pre>Ctrl+Alt+O</pre>
             </button>
           </li>
           <li className="MenuButton__subMenuBox--item">

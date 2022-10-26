@@ -32,7 +32,7 @@ function Home() {
       },
     },
     {
-      key: "control+o",
+      key: "control+alt+o",
       handler: async () => {
         const root = await OpenFile();
         // TODO: Open file in editor
