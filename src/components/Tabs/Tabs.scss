@@ -30,6 +30,13 @@
         padding: 0 32px 0 10px;
       }
 
+      p {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        max-width: 114px;
+      }
+
       &:last-child {
         position: absolute;
         right: 6px;

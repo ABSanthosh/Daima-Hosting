@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import "./MonacoEditor.scss";
 // import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { DefineMonacoThemes } from "./ThemeHelper";
@@ -19,7 +19,9 @@ function MonacoEditor({ setCode, code }) {
     if (editorRef) {
       tempEditor = monaco.editor.create(editorRef.current, {
         value: code,
-        language: Lang[selectedFiles?.ext] ? Lang[selectedFiles.ext][0] : "text",
+        language: Lang[selectedFiles?.ext]
+          ? Lang[selectedFiles.ext][0]
+          : "text",
         theme: currentTheme,
         automaticLayout: true,
         model: null,
@@ -30,7 +32,6 @@ function MonacoEditor({ setCode, code }) {
         autoClosingBrackets: "beforeWhitespace",
         useShadowDOM: true,
         trimAutoWhitespace: true,
-        
       });
       window.editor = tempEditor;
     }
