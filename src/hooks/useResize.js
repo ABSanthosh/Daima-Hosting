@@ -1,12 +1,16 @@
 import { useEffect } from "react";
 
-export default function useResize(containerRef, dragRef, onDrag, onStop) {
+export default function useResize(
+  containerRef,
+  dragRef,
+  onDrag,
+  onStop,
+  onLowerLimit
+) {
   useEffect(() => {
-    // on mouse down on the drag bar
     const onMouseDown = (e) => {
       const initialX = e.clientX;
       const initialWidth = containerRef.current.offsetWidth;
-
 
       document.addEventListener("mousemove", onMouseMove);
       document.addEventListener("mouseup", onMouseUp);
@@ -20,6 +24,8 @@ export default function useResize(containerRef, dragRef, onDrag, onStop) {
         if (width >= 170 && width <= 470) {
           onDrag(width);
           containerRef.current.style.width = `${width}px`;
+        } else if (width < 100) {
+          onLowerLimit();
         }
       }
 
