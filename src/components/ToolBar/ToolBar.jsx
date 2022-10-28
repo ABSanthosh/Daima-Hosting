@@ -30,7 +30,9 @@ function ToolBar() {
         />
       </div>
       <div className="ToolBar__right">
-        <span
+        <button className="ToolBar__icon--learn" data-icon={String.fromCharCode(60068)} />
+        <button className="ToolBar__icon--liveHelp" data-icon={String.fromCharCode(60184)} />
+        <button
           className={`ToolBar__icon--toggleFullScreen ${
             !isFullScreen ? "ToolBar__icon--active" : ""
           }`}

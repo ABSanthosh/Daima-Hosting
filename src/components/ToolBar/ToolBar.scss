@@ -18,14 +18,24 @@
 
   &__icon {
     &--sidePanelToggle,
-    &--toggleFullScreen {
+    &--toggleFullScreen,
+    &--liveHelp,
+    &--learn {
       @include box(30px, 32px);
       @include make-flex();
+      background-color: transparent;
+      border: none;
+      outline: none;
       cursor: pointer;
       color: var(--daima-activityBar-foreground) !important;
       &:hover {
         background-color: var(--daima-toolbar-hoverBackground);
       }
+    }
+
+    &--liveHelp,
+    &--learn {
+      cursor: not-allowed;
     }
   }
 }
