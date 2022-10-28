@@ -1,5 +1,7 @@
 import { useStoreActions, useStoreState } from "easy-peasy";
 import React from "react";
+import { useState } from "react";
+import BlurredSpinner from "../../components/BlurredSpinner/BlurredSpinner";
 import BreadCrumbs from "../../components/BreadCrumbs/BreadCrumbs";
 import FancyButton from "../../components/FancyButton/FancyButton";
 import FolderTree from "../../components/FolderTree/FolderTree";
@@ -7,8 +9,12 @@ import MonacoEditor from "../../components/MonacoEditor/MonacoEditor";
 import SidePane from "../../components/SidePane/SidePane";
 import Tabs from "../../components/Tabs/Tabs";
 import ToolBar from "../../components/ToolBar/ToolBar";
-import useHotKey from "../../hooks/useHotKey";
-import { CreateFolderMap, OpenFile } from "../../utils/FileAccess";
+import useKeyboardShortcut from "use-keyboard-shortcut";
+import {
+  CreateFolderMap,
+  OpenFile,
+  saveFileContents,
+} from "../../utils/FileAccess";
 import "./Home.scss";
 
 function Home() {
@@ -24,6 +30,10 @@ function Home() {
   const toggleSidePanel = useStoreActions((action) => action.toggleSidePanel);
   const setTheme = useStoreActions((action) => action.setTheme);
 
+  const setIsSaving = useStoreActions((action) => action.setIsSaving);
+  const currentFileContent = useStoreState((state) => state.currentFileContent);
+
+  const [showLoader, setShowLoader] = useState(false);
   const setSelectedFolderState = useStoreActions(
     (actions) => actions.setSelectedFolderState
   );
@@ -57,10 +67,21 @@ function Home() {
         setTheme(themes[nextThemeIndex]);
       },
     },
+    {
+      key: "control+s",
+      handler: async () => {
+        setIsSaving(true);
+        await saveFileContents(currentFile.handler, currentFileContent).then(
+          () => setIsSaving(false)
+        );
+      },
+    },
   ];
 
   keybindings.forEach((keybinding) => {
-    useHotKey(keybinding.key, keybinding.handler);
+    useKeyboardShortcut(keybinding.key.split("+"), keybinding.handler, {
+      overrideSystem: true,
+    });
   });
 
   return (
@@ -78,6 +99,8 @@ function Home() {
           <SidePane>
             {currentActivity === "explorer" && (
               <>
+                {showLoader && <BlurredSpinner />}
+
                 {folderStructure ? (
                   <FolderTree
                     original={folderStructure}
@@ -87,8 +110,14 @@ function Home() {
                   <div className="Workbench__content--empty">
                     <FancyButton
                       onClick={async () => {
-                        const root = await CreateFolderMap();
-                        setSelectedFolderState(root);
+                        setShowLoader(true);
+                        try {
+                          const root = await CreateFolderMap();
+                          setSelectedFolderState(root);
+                          setShowLoader(false);
+                        } catch (error) {
+                          setShowLoader(false);
+                        }
                       }}
                       innerText="Open a folder"
                     />
