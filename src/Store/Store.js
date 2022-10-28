@@ -29,9 +29,15 @@ const Store = createStore(
         state.isFullScreen = !state.isFullScreen;
       }),
 
-      toggleSidePanel: action((state) => {
-        state.sidePanelState = !state.sidePanelState;
-      }),
+      toggleSidePanel: action(
+        (state, payload = { manual: false, newState: false }) => {
+          if (payload.manual) {
+            state.sidePanelState = payload.newState;
+          } else {
+            state.sidePanelState = !state.sidePanelState;
+          }
+        }
+      ),
 
       setCurrentFile: action((state, payload) => {
         state.currentFile = payload;
@@ -78,7 +84,7 @@ const Store = createStore(
         "selectedFileContent",
         "currentFile",
       ],
-      storage: storage("diama-editor"),
+      // storage: storage("diama-editor"),
     }
   )
 );
