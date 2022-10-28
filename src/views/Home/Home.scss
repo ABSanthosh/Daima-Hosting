@@ -5,10 +5,65 @@
   background-color: var(--daima-editorPane-background);
   color: var(--daima-foreground);
   overflow: hidden;
+  grid-template-rows: 32px 1fr;
 
-  &__right {
+  &__bottom {
     display: grid;
-    grid-template-rows: 35px 22px 1fr;
-    grid-template-columns: 100%;
+
+    &--right {
+      display: grid;
+      grid-template-rows: 35px 22px 1fr;
+      grid-template-columns: 100%;
+    }
+
+    &--empty {
+      @include box();
+      @include make-flex();
+
+      ul {
+        list-style: none;
+        @include make-flex();
+        @include box(315px, auto);
+        gap: 20px;
+
+        li {
+          @include make-flex($dir: row, $just: space-between);
+          @include box($height: auto);
+
+          p {
+            user-select: none;
+            color: var(--daima-titleBar-inactiveForeground);
+          }
+
+          button {
+            @include make-flex();
+            cursor: pointer;
+            padding: 5px 9px 3px 9px;
+            border-radius: 4px;
+            outline: none;
+            border: none;
+            color: var(--daima-foreground);
+            background-color: var(--daima-keybindingLabel-background);
+            border: 1.5px solid transparent;
+
+            &:hover {
+              border: 1.5px solid var(--daima-tree-indentGuidesStroke);
+            }
+
+            pre {
+              line-height: 100%;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &__content {
+    &--empty {
+      @include box();
+      @include make-flex($just: flex-start);
+      padding: 6px 10px 0 10px;
+    }
   }
 }

@@ -1,12 +1,16 @@
-import { useStoreActions } from "easy-peasy";
+import { useStoreActions, useStoreState } from "easy-peasy";
 import React, { useState } from "react";
 import useResize from "../../hooks/useResize";
 import "./SidePane.scss";
 
-function SidePane({ children, title }) {
+function SidePane({ children }) {
   const containerRef = React.useRef(null);
   const dragRef = React.useRef(null);
   const setSidebarWidth = useStoreActions((actions) => actions.setSidebarWidth);
+  const toggleSidePanel = useStoreActions((action) => action.toggleSidePanel);
+  const setActiveItem = useStoreActions((actions) => actions.setActivityItem);
+  const activeItem = useStoreState((state) => state.activityItem);
+
   const [isMouseOver, setMouseOver] = useState(false);
   useResize(
     containerRef,
@@ -18,6 +22,13 @@ function SidePane({ children, title }) {
       setSidebarWidth(width);
     },
     () => {
+      dragRef.current.style.backgroundColor = "";
+      dragRef.current.style.animation = "";
+      document.body.style.cursor = "";
+    },
+    () => {
+      toggleSidePanel({ manual: true, state: false });
+      setSidebarWidth(284);
       dragRef.current.style.backgroundColor = "";
       dragRef.current.style.animation = "";
       document.body.style.cursor = "";
@@ -42,9 +53,56 @@ function SidePane({ children, title }) {
           }
         }}
       />
-      <div className="SidePane__header">
-        <h2>{title}</h2>
-      </div>
+      <ul className="SidePane__headerTabs">
+        <li
+          className={`SidePane__headerTabs--${
+            activeItem === "explorer" ? "activeItem" : "item"
+          }`}
+        >
+          <button
+            onClick={() => {
+              if (activeItem !== "explorer") {
+                setActiveItem("explorer");
+              }
+            }}
+            data-icon={String.fromCharCode(60035)}
+          >
+            <p>Files</p>
+          </button>
+        </li>
+        <li
+          className={`SidePane__headerTabs--${
+            activeItem === "git" ? "activeItem" : "item"
+          }`}
+        >
+          <button
+            onClick={() => {
+              if (activeItem !== "git") {
+                setActiveItem("git");
+              }
+            }}
+            data-icon={String.fromCharCode(60158)}
+          >
+            <p>Git</p>
+          </button>
+        </li>
+        <li
+          className={`SidePane__headerTabs--${
+            activeItem === "search" ? "activeItem" : "item"
+          }`}
+        >
+          <button
+            onClick={() => {
+              if (activeItem !== "search") {
+                setActiveItem("search");
+              }
+            }}
+            data-icon={String.fromCharCode(60013)}
+          >
+            <p>Search</p>
+          </button>
+        </li>
+      </ul>
       <div
         className="SidePane__content"
         onMouseEnter={() => setMouseOver(true)}

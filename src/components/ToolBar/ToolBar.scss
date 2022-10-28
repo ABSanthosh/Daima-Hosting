@@ -1,0 +1,41 @@
+.ToolBar {
+  @include make-flex($dir: row, $just: space-between);
+  @include box(100%, 32px);
+  // gap: 5px;
+  border-bottom: 1.5px solid var(--daima-tree-indentGuidesStroke);
+  // background-color: var(--daima-editorGroupHeader-tabsBackground);
+  background-color: var(--daima-editorPane-background);
+  padding-left: 7px;
+  img {
+    @include box(30px, 32px);
+    padding: 6px;
+  }
+
+  &__left,
+  &__right {
+    @include make-flex($dir: row, $just: flex-start);
+  }
+
+  &__icon {
+    &--sidePanelToggle,
+    &--toggleFullScreen,
+    &--liveHelp,
+    &--learn {
+      @include box(30px, 32px);
+      @include make-flex();
+      background-color: transparent;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      color: var(--daima-activityBar-foreground) !important;
+      &:hover {
+        background-color: var(--daima-toolbar-hoverBackground);
+      }
+    }
+
+    &--liveHelp,
+    &--learn {
+      cursor: not-allowed;
+    }
+  }
+}
