@@ -1,12 +1,16 @@
 .File {
   @include box(100%, 22px);
   position: relative;
+
   & > span {
     @include box();
     @include make-flex($dir: row, $just: flex-start);
     cursor: pointer;
     white-space: pre;
     user-select: none;
+    p {
+      font-size: 15px;
+    }
   }
   &:hover {
     background-color: var(--daima-list-hoverBackground);
@@ -19,6 +23,7 @@
     left: 13px;
     pointer-events: none;
     display: inline-flex;
+
   }
 }
 
@@ -47,6 +52,7 @@
     & > span {
       @include box();
       @include make-flex($dir: row, $just: flex-start);
+      font-size: 15px;
     }
 
     &:hover {
