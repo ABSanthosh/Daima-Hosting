@@ -19,20 +19,11 @@
     &--sidePanelToggle,
     &--toggleFullScreen {
       @include box(30px, 30px);
-      // padding: 6px;
       @include make-flex();
       cursor: pointer;
+      color: var(--daima-activityBar-foreground) !important;
       &:hover {
         background-color: var(--daima-toolbar-hoverBackground);
-      }
-    }
-
-    &--active {
-      &::before {
-        background-color: var(--daima-toolbar-hoverBackground);
-        padding: 2.5px;
-        border-radius: 3px;
-        color: var(--daima-activityBar-foreground);
       }
     }
   }

@@ -23,11 +23,9 @@ function ToolBar() {
           setShowMenu={setShowMenu}
         />
         <span
-          className={`ToolBar__icon--sidePanelToggle ToolBar__icon${
-            sidePanelState ? "--active" : ""
-          }`}
+          className="ToolBar__icon--sidePanelToggle"
           title="Toggle Side Panel"
-          data-icon={String.fromCharCode(60418)}
+          data-icon={String.fromCharCode(sidePanelState ? 60403 : 60418)}
           onClick={() => toggleSidePanel()}
         />
       </div>
