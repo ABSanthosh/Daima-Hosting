@@ -1,6 +1,7 @@
 import { useStoreActions, useStoreState } from "easy-peasy";
 import React from "react";
 import BreadCrumbs from "../../components/BreadCrumbs/BreadCrumbs";
+import FancyButton from "../../components/FancyButton/FancyButton";
 import FolderTree from "../../components/FolderTree/FolderTree";
 import MonacoEditor from "../../components/MonacoEditor/MonacoEditor";
 import SidePane from "../../components/SidePane/SidePane";
@@ -50,7 +51,6 @@ function Home() {
       key: "control+alt+`",
       handler: () => {
         const themes = ["tomorrow-night-blue", "github", "blackboard"];
-        // based on currentTheme, set the next theme
         const currentThemeIndex = themes.indexOf(currentTheme);
         const nextThemeIndex =
           currentThemeIndex === themes.length - 1 ? 0 : currentThemeIndex + 1;
@@ -84,7 +84,15 @@ function Home() {
                     folderStructure={folderStructure}
                   />
                 ) : (
-                  "Open Folder"
+                  <div className="Workbench__content--empty">
+                    <FancyButton
+                      onClick={async () => {
+                        const root = await CreateFolderMap();
+                        setSelectedFolderState(root);
+                      }}
+                      innerText="Open a folder"
+                    />
+                  </div>
                 )}
               </>
             )}
@@ -125,7 +133,21 @@ function Home() {
                 </li>
                 <li>
                   <p>Switch theme</p>
-                  <button onClick={async () => toggleSidePanel()}>
+                  <button
+                    onClick={async () => {
+                      const themes = [
+                        "tomorrow-night-blue",
+                        "github",
+                        "blackboard",
+                      ];
+                      const currentThemeIndex = themes.indexOf(currentTheme);
+                      const nextThemeIndex =
+                        currentThemeIndex === themes.length - 1
+                          ? 0
+                          : currentThemeIndex + 1;
+                      setTheme(themes[nextThemeIndex]);
+                    }}
+                  >
                     <pre>Ctrl + Alt + `</pre>
                   </button>
                 </li>
