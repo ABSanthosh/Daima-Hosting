@@ -13,6 +13,7 @@ function ToolBar() {
   );
   const isFullScreen = useStoreState((state) => state.isFullScreen);
   const sidePanelState = useStoreState((state) => state.sidePanelState);
+  const isSaving = useStoreState((state) => state.isSaving);
 
   return (
     <div className="ToolBar" ref={outRef}>
@@ -30,8 +31,22 @@ function ToolBar() {
         />
       </div>
       <div className="ToolBar__right">
-        <button className="ToolBar__icon--learn" data-icon={String.fromCharCode(60068)} />
-        <button className="ToolBar__icon--liveHelp" data-icon={String.fromCharCode(60184)} />
+        {isSaving && (
+          <span
+            className="ToolBar__icon--savingStatus"
+            data-icon={String.fromCharCode(60185)}
+          >
+            <p>Saving...</p>
+          </span>
+        )}
+        <button
+          className="ToolBar__icon--learn"
+          data-icon={String.fromCharCode(60068)}
+        />
+        <button
+          className="ToolBar__icon--liveHelp"
+          data-icon={String.fromCharCode(60184)}
+        />
         <button
           className={`ToolBar__icon--toggleFullScreen ${
             !isFullScreen ? "ToolBar__icon--active" : ""
