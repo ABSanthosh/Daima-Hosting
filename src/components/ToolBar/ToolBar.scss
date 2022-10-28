@@ -20,9 +20,11 @@
     &--sidePanelToggle,
     &--toggleFullScreen,
     &--liveHelp,
-    &--learn {
-      @include box(30px, 32px);
-      @include make-flex();
+    &--learn,
+    &--savingStatus {
+      @include box(auto, 32px);
+      min-width: 30px;
+      @include make-flex($dir: row);
       background-color: transparent;
       border: none;
       outline: none;
@@ -33,9 +35,31 @@
       }
     }
 
+    &--savingStatus {
+      gap: 8px;
+      padding: 0 8px;
+
+      p {
+        font-size: 14px;
+      }
+
+      &::before {
+        animation: infinite 1s spinner;
+        transition: all 0.3s ease-in-out;
+      }
+    }
+
     &--liveHelp,
     &--learn {
       cursor: not-allowed;
     }
+  }
+}
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }

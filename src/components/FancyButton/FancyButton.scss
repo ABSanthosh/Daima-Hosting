@@ -3,6 +3,7 @@
 
   @include make-flex();
   background-color: var(--daima-editorPane-background);
+  color: var(--daima-foreground);
   border-radius: 4px;
   outline: none;
   border: none;

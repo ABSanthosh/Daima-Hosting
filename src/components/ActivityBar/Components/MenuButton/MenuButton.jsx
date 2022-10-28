@@ -1,7 +1,11 @@
 import { useStoreActions, useStoreState } from "easy-peasy";
 import React from "react";
 import useOnClickOutside from "../../../../hooks/useOnClickOutside";
-import { CreateFolderMap, OpenFile } from "../../../../utils/FileAccess";
+import {
+  CreateFolderMap,
+  OpenFile,
+  saveFileContents,
+} from "../../../../utils/FileAccess";
 import "./MenuButton.scss";
 
 function MenuButton({ outRef, showMenu, setShowMenu }) {
@@ -11,12 +15,16 @@ function MenuButton({ outRef, showMenu, setShowMenu }) {
   });
 
   const currentTheme = useStoreState((state) => state.theme);
+  const currentFile = useStoreState((state) => state.currentFile);
+  const currentFileContent = useStoreState((state) => state.currentFileContent);
+
   const setCurrentTheme = useStoreActions((actions) => actions.setTheme);
   const setSelectedFolderState = useStoreActions(
     (actions) => actions.setSelectedFolderState
   );
   const toggleAutoSave = useStoreActions((actions) => actions.toggleAutoSave);
   const isAutoSave = useStoreState((state) => state.isAutoSave);
+  const setIsSaving = useStoreActions((action) => action.setIsSaving);
 
   useOnClickOutside(outRef, () => {
     setShowMenu(false);
@@ -131,13 +139,23 @@ function MenuButton({ outRef, showMenu, setShowMenu }) {
           </li>
           <li className="MenuButton__subMenuBox--separator" />
           <li className="MenuButton__subMenuBox--item">
-            <button>Save</button>
-          </li>
-          <li className="MenuButton__subMenuBox--item">
-            <button>Save As</button>
+            <button
+              onClick={async () => {
+                setIsSaving(true);
+                await saveFileContents(
+                  currentFile.handler,
+                  currentFileContent
+                ).then(() => setIsSaving(false));
+              }}
+            >
+              Save
+            </button>
           </li>
           <li className="MenuButton__subMenuBox--disabled">
-            <button disabled onClick={() => toggleAutoSave()}>
+            <button disabled>Save As</button>
+          </li>
+          <li className="MenuButton__subMenuBox--item">
+            <button onClick={() => toggleAutoSave()}>
               <span>Auto Save</span>
               {isAutoSave && <span data-icon="&#60082;" />}
             </button>

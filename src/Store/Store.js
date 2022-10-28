@@ -16,13 +16,21 @@ const Store = createStore(
       selectedFolder: null,
 
       selectedFiles: [],
-      selectedFileContent: [],
+
+      currentFileContent: null,
+      currentFileChanged: false,
       currentFile: { path: "" },
+
       isAutoSave: false,
+      isSaving: false,
       isFullScreen: false,
+      debounce: 1000,
 
       toggleAutoSave: action((state) => {
         state.isAutoSave = !state.isAutoSave;
+      }),
+      setIsSaving: action((state, payload) => {
+        state.isSaving = payload;
       }),
 
       toggleFullScreenState: action((state) => {
@@ -58,8 +66,12 @@ const Store = createStore(
         );
       }),
 
-      setSelectedFileContent: action((state, payload) => {
-        state.selectedFileContent = [...state.selectedFileContent, payload];
+      setCurrentFileChanged: action((state, payload) => {
+        state.currentFileChanged = payload;
+      }),
+
+      setCurrentFileContent: action((state, payload) => {
+        state.currentFileContent = payload;
       }),
 
       setSelectedFolderState: action((state, payload) => {
@@ -83,6 +95,7 @@ const Store = createStore(
         "selectedFiles",
         "selectedFileContent",
         "currentFile",
+        "currentFileContent",
       ],
       // storage: storage("diama-editor"),
     }

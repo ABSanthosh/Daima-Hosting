@@ -7,20 +7,31 @@ export async function getFileContents(fileHandle) {
   return await file.text();
 }
 
+export async function saveFileContents(fileHandle, content) {
+  const writable = await fileHandle.createWritable();
+  await writable.write(content);
+  await writable.close();
+  return fileHandle;
+}
+
 export async function CreateFolderMap() {
-  const fileHandle = await window.showDirectoryPicker();
+  try {
+    const fileHandle = await window.showDirectoryPicker();
 
-  const root = {
-    name: fileHandle.name,
-    type: fileHandle.kind,
-    open: true,
-    path: fileHandle.name,
-    children: [],
-  };
+    const root = {
+      name: fileHandle.name,
+      type: fileHandle.kind,
+      open: true,
+      path: fileHandle.name,
+      children: [],
+    };
 
-  await getFile(fileHandle, root);
+    await getFile(fileHandle, root);
 
-  return root;
+    return root;
+  } catch (error) {
+    return error;
+  }
 }
 
 async function getFile(fileHandle, root) {

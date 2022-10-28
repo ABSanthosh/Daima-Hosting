@@ -6,13 +6,12 @@ import SetiMap from "../../assets/Maps/SetiMap.json";
 import { handleEditorContent } from "../../utils/MonacoModel";
 
 function File({ folderStructure, depth }) {
-
   const setSelectedFiles = useStoreActions((action) => action.setSelectedFiles);
   const setCurrentFile = useStoreActions((action) => action.setCurrentFile);
-  const setSelectedFileContent = useStoreActions(
-    (action) => action.setSelectedFileContent
-  );
 
+  const setCurrentFileChanged = useStoreActions(
+    (action) => action.setCurrentFileChanged
+  );
   const iconChar =
     SetiMap["iconDefinitions"][SetiMap["languageIds"][folderStructure.ext]];
   const iconOctal = String.fromCharCode(
@@ -30,7 +29,7 @@ function File({ folderStructure, depth }) {
         setSelectedFiles(folderStructure);
         setCurrentFile(folderStructure);
         const content = await getFileContents(folderStructure.handler);
-        setSelectedFileContent(content);
+        setCurrentFileChanged(false);
         handleEditorContent(folderStructure, content);
       }}
     >
