@@ -7,7 +7,9 @@ import "./ToolBar.scss";
 function ToolBar() {
   const [showMenu, setShowMenu] = useState(false);
   const outRef = useRef(null);
-  const toggleSidePanel = useStoreActions((actions) => actions.toggleSidePanel);
+  const setSidePanelState = useStoreActions(
+    (actions) => actions.setSidePanelState
+  );
   const toggleFullScreenState = useStoreActions(
     (actions) => actions.toggleFullScreenState
   );
@@ -26,8 +28,14 @@ function ToolBar() {
         <span
           className="ToolBar__icon--sidePanelToggle"
           title="Toggle Side Panel"
-          data-icon={String.fromCharCode(sidePanelState ? 60403 : 60418)}
-          onClick={() => toggleSidePanel()}
+          data-icon={String.fromCharCode(sidePanelState.left ? 60403 : 60418)}
+          onClick={() => setSidePanelState({ left: !sidePanelState.left })}
+        />
+        <span
+          className="ToolBar__icon--sidePanelToggle"
+          title="Toggle Side Panel"
+          data-icon={String.fromCharCode(sidePanelState.right ? 60404 : 60416)}
+          onClick={() => setSidePanelState({ right: !sidePanelState.right })}
         />
       </div>
       <div className="ToolBar__right">

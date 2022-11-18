@@ -10,8 +10,9 @@ const Store = createStore(
       // monaco: monaco,
       theme: "github",
       activityItem: "explorer",
-      sidebarWidth: 284,
-      sidePanelState: true,
+      leftPanelWidth: 284,
+      rightPanelWidth: 284,
+      sidePanelState: { left: true, right: false },
 
       selectedFolder: null,
 
@@ -37,15 +38,15 @@ const Store = createStore(
         state.isFullScreen = !state.isFullScreen;
       }),
 
-      toggleSidePanel: action(
-        (state, payload = { manual: false, newState: false }) => {
-          if (payload.manual) {
-            state.sidePanelState = payload.newState;
-          } else {
-            state.sidePanelState = !state.sidePanelState;
-          }
-        }
-      ),
+      setSidePanelState: action((state, payload) => {
+        state.sidePanelState = { ...state.sidePanelState, ...payload };
+
+        if (payload.left && state.leftPanelWidth === 0)
+          state.leftPanelWidth = 284;
+
+        if (payload.right && state.rightPanelWidth === 0)
+          state.rightPanelWidth = 284;
+      }),
 
       setCurrentFile: action((state, payload) => {
         state.currentFile = payload;
@@ -85,8 +86,20 @@ const Store = createStore(
       setActivityItem: action((state, payload) => {
         state.activityItem = payload;
       }),
-      setSidebarWidth: action((state, payload) => {
-        state.sidebarWidth = payload;
+
+      setLeftPanelWidth: action((state, payload) => {
+        state.leftPanelWidth = payload;
+        if (payload === 0)
+          state.sidePanelState = { ...state.sidePanelState, left: false };
+        else if (payload > 0 && !state.sidePanelState.left)
+          state.sidePanelState = { ...state.sidePanelState, left: true };
+      }),
+      setRightPanelWidth: action((state, payload) => {
+        state.rightPanelWidth = payload;
+        if (payload === 0)
+          state.sidePanelState = { ...state.sidePanelState, right: false };
+        else if (payload > 0 && !state.sidePanelState.right)
+          state.sidePanelState = { ...state.sidePanelState, right: true };
       }),
     },
     {
