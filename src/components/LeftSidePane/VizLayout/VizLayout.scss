@@ -15,4 +15,9 @@
       @include box($height: 40%);
     }
   }
+
+  &__pathBox {
+    @include box();
+    @include make-flex();
+  }
 }

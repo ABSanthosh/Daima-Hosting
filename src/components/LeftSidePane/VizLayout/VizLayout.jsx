@@ -93,10 +93,7 @@ function VizLayout() {
         </>
       )}
 
-      {vizItem === "path" && (
-        <>
-        </>
-      )}
+      {vizItem === "path" && <div className="VizLayout__pathBox">Dijkstra</div>}
     </div>
   );
 }

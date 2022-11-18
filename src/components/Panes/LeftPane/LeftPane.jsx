@@ -10,6 +10,7 @@ function LeftPane() {
   const currentActivity = useStoreState((state) => state.activityItem);
   const [isMouseOver, setMouseOver] = useState(false);
   const setActiveItem = useStoreActions((actions) => actions.setActivityItem);
+  const setVizItem = useStoreActions((actions) => actions.setVizItem);
   const setSelectedFolderState = useStoreActions(
     (actions) => actions.setSelectedFolderState
   );
@@ -108,9 +109,16 @@ function LeftPane() {
           )}
 
           {currentActivity === "visualize" && (
-            <>
-              
-            </>
+            <div className="Workbench__content--empty">
+              <FancyButton
+                onClick={() => setVizItem("sort")}
+                innerText="Sorting"
+              />
+              <FancyButton
+                onClick={() => setVizItem("path")}
+                innerText="Path Finding"
+              />
+            </div>
           )}
         </div>
       </div>

@@ -10,7 +10,7 @@ const Store = createStore(
       // monaco: monaco,
       theme: "github",
       activityItem: "explorer",
-      vizItem: "sort", // sort, path
+      vizItem: "path", // sort, path
       leftPanelWidth: 284,
       rightPanelWidth: 284,
       sidePanelState: { left: true, right: false },
@@ -27,6 +27,10 @@ const Store = createStore(
       isSaving: false,
       isFullScreen: false,
       debounce: 1000,
+
+      setVizItem: action((state, payload) => {
+        state.vizItem = payload;
+      }),
 
       toggleAutoSave: action((state) => {
         state.isAutoSave = !state.isAutoSave;

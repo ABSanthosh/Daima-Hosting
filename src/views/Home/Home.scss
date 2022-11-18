@@ -66,6 +66,7 @@
       @include box();
       @include make-flex($just: flex-start);
       padding: 6px 10px 0 10px;
+      gap: 10px;
     }
   }
 
