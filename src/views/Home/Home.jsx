@@ -17,6 +17,7 @@ import { useEffect } from "react";
 
 import Split from "react-split-grid";
 import useDebounce from "../../hooks/useDebounce";
+import VizLayout from "../../components/LeftSidePane/VizLayout/VizLayout";
 
 function Home() {
   const [code, setCode] = React.useState("");
@@ -26,6 +27,7 @@ function Home() {
   const folderStructure = useStoreState((state) => state.selectedFolder);
   const currentFile = useStoreState((state) => state.currentFile);
   const selectedFiles = useStoreState((state) => state.selectedFiles);
+  const currentActivity = useStoreState((state) => state.activityItem);
 
   const leftPanelWidth = useStoreState((state) => state.leftPanelWidth);
   const rightPanelWidth = useStoreState((state) => state.rightPanelWidth);
@@ -157,13 +159,14 @@ function Home() {
                   selectedFiles.length > 0 ? "35px 22px 1fr" : "1fr",
               }}
             >
-              {selectedFiles.length > 0 ? (
+              {selectedFiles.length > 0 && (
                 <>
                   <Tabs folderStructure={folderStructure} />
                   <BreadCrumbs currentFile={currentFile} />
                   <MonacoEditor setCode={setCode} code={code} />
                 </>
-              ) : (
+              )}
+              {selectedFiles.length <= 0 && currentActivity !== "visualize" && (
                 <div className="Workbench__bottom--empty">
                   <ul>
                     <li>
@@ -211,6 +214,7 @@ function Home() {
                   </ul>
                 </div>
               )}
+              {currentActivity === "visualize" && <VizLayout />}
             </div>
             <span
               role="presentation"

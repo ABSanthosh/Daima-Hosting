@@ -10,7 +10,7 @@
   &__bottom {
     display: grid;
     position: relative;
-    // grid-template-columns: 284px 4px 1fr 4px 284px;
+    margin-right: 1.5px;
 
     &--middle {
       display: grid;
@@ -92,38 +92,10 @@
     //   grid-column: 4;
     // }
   }
+
+  &__visualize {
+    @include box();
+    @include make-flex($just: flex-start);
+
+  }
 }
-
-// .grid {
-//   display: grid;
-//   grid-template-columns: 1fr 10px 1fr 10px 1fr;
-// }
-
-// .gutter-col {
-//   grid-row: 1/-1;
-//   cursor: col-resize;
-// }
-
-// .gutter-col-1 {
-//   grid-column: 2;
-// }
-
-// .gutter-col-3 {
-//   grid-column: 4;
-// }
-
-// .gutter-col {
-//   background-color: #e5e7eb;
-//   background-repeat: no-repeat;
-//   background-position: 50%;
-// }
-
-// .gutter-col.gutter-horizontal {
-//   background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==");
-//   cursor: col-resize;
-// }
-
-// .gutter-col.gutter-vertical {
-//   background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFAQMAAABo7865AAAABlBMVEVHcEzMzMzyAv2sAAAAAXRSTlMAQObYZgAAABBJREFUeF5jOAMEEAIEEFwAn3kMwcB6I2AAAAAASUVORK5CYII=");
-//   cursor: row-resize;
-// }

@@ -10,6 +10,7 @@ const Store = createStore(
       // monaco: monaco,
       theme: "github",
       activityItem: "explorer",
+      vizItem: "sort", // sort, path
       leftPanelWidth: 284,
       rightPanelWidth: 284,
       sidePanelState: { left: true, right: false },

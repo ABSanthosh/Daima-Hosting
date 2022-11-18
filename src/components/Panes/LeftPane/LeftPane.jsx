@@ -38,21 +38,21 @@ function LeftPane() {
         </li>
         <li
           className={`LeftPane__headerTabs--${
-            activeItem === "git" ? "activeItem" : "item"
+            activeItem === "visualize" ? "activeItem" : "item"
           }`}
         >
           <button
             onClick={() => {
-              if (activeItem !== "git") {
-                setActiveItem("git");
+              if (activeItem !== "visualize") {
+                setActiveItem("visualize");
               }
             }}
-            data-icon={String.fromCharCode(60158)}
+            data-icon={String.fromCharCode(60068)}
           >
-            <p>Git</p>
+            <p>visualize</p>
           </button>
         </li>
-        <li
+        {/* <li
           className={`LeftPane__headerTabs--${
             activeItem === "search" ? "activeItem" : "item"
           }`}
@@ -67,7 +67,7 @@ function LeftPane() {
           >
             <p>Search</p>
           </button>
-        </li>
+        </li> */}
       </ul>
       <div
         className="LeftPane__content"
@@ -104,6 +104,12 @@ function LeftPane() {
                   />
                 </div>
               )}
+            </>
+          )}
+
+          {currentActivity === "visualize" && (
+            <>
+              
             </>
           )}
         </div>
