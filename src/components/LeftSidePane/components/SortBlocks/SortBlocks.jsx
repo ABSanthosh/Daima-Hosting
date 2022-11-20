@@ -1,17 +1,17 @@
 import "./SortBlocks.scss";
 
-function SortBlocks({ blockArray }) {
+function SortBlocks({ blockArray, optionalColor = "", sortType }) {
   return (
-    <ul className="SortBlocks">
+    <ul className={`SortBlocks SortBlocks--${sortType}`}>
       {blockArray.map((height, index) => (
         <li
-          className="SortBlocks__blockBox"
+          className={`SortBlocks__blockBox SortBlocks__blockBox--${sortType}`}
           key={index}
           style={{
             height: `${height}px`,
+            backgroundColor: optionalColor,
           }}
         >
-          {/* <pre>{height}</pre> */}
         </li>
       ))}
     </ul>
