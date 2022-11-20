@@ -1,5 +1,5 @@
 .DijkstraGrid {
-  @include box();
+  @include box(auto, auto);
   @include make-flex();
   gap: 5px;
   &__row {

@@ -1,9 +1,11 @@
-const START_NODE_ROW = 10;
-const START_NODE_COL = 9;
-const FINISH_NODE_ROW = 10;
-const FINISH_NODE_COL = 30;
-
-function createNode(col, row) {
+function createNode(
+  col,
+  row,
+  START_NODE_ROW,
+  START_NODE_COL,
+  FINISH_NODE_ROW,
+  FINISH_NODE_COL
+) {
   return {
     col,
     row,
@@ -16,12 +18,28 @@ function createNode(col, row) {
   };
 }
 
-function getInitialGrid() {
+function getInitialGrid(
+  noRows = 19,
+  noCols = 40,
+  START_NODE_ROW,
+  START_NODE_COL,
+  FINISH_NODE_ROW,
+  FINISH_NODE_COL
+) {
   const grid = [];
-  for (let row = 0; row < 21; row++) {
+  for (let row = 0; row < noRows; row++) {
     const currentRow = [];
-    for (let col = 0; col < 40; col++) {
-      currentRow.push(createNode(col, row));
+    for (let col = 0; col < noCols; col++) {
+      currentRow.push(
+        createNode(
+          col,
+          row,
+          START_NODE_ROW,
+          START_NODE_COL,
+          FINISH_NODE_ROW,
+          FINISH_NODE_COL
+        )
+      );
     }
     grid.push(currentRow);
   }
