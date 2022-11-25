@@ -9,4 +9,7 @@
   border: none;
   border: 1.5px solid var(--daima-tree-indentGuidesStroke);
   cursor: pointer;
+  &:hover {
+    background-color: var(--daima-editorStickyScrollHover-background);
+  }
 }

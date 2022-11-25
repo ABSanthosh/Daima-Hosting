@@ -13,10 +13,15 @@
     "git-parse": "^3.0.0",
     "localforage": "^1.10.0",
     "monaco-editor": "^0.34.0",
+    "nanoid": "^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.3.0",
-    "use-keyboard-shortcut": "^1.1.6"
+    "react-split-grid": "^1.0.4",
+    "use-keyboard-shortcut": "^1.1.6",
+    "y-monaco": "^0.1.4",
+    "y-webrtc": "^10.2.3",
+    "yjs": "^13.5.42"
   },
   "devDependencies": {
     "@types/react": "^18.0.17",

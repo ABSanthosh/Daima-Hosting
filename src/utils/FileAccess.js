@@ -30,7 +30,7 @@ export async function CreateFolderMap() {
 
     return root;
   } catch (error) {
-    return error;
+    return null;
   }
 }
 

@@ -1,17 +1,27 @@
 import { createStore, action, persist, debug } from "easy-peasy";
-import storage from "../utils/StorageEngine";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+import storage from "../utils/StorageEngine";
+import * as Y from "yjs";
 
 window.monaco = monaco;
+let yDoc = new Y.Doc();
+let ySharedDocs = yDoc.getArray("daima-editorList");
+window.yDoc = yDoc;
+window.ySharedDocs = ySharedDocs;
 
 const Store = createStore(
   persist(
     {
       // monaco: monaco,
       theme: "github",
+      vizItem: "path", // sort, path
+      leftPanelWidth: 284,
+      rightPanelWidth: 284,
       activityItem: "explorer",
-      sidebarWidth: 284,
-      sidePanelState: true,
+      ySharedDocs: ySharedDocs,
+      yProvider: null,
+      yBinding: null,
+      sidePanelState: { left: true, right: false },
 
       selectedFolder: null,
 
@@ -26,6 +36,56 @@ const Store = createStore(
       isFullScreen: false,
       debounce: 1000,
 
+      hostSessionId: null,
+      joinSessionId: null,
+
+      setYSharedDocs: action((state, payload) => {
+        state.ySharedDocs = payload;
+      }),
+      setYBinding: action((state, payload) => {
+        state.yBinding = payload;
+      }),
+      setYProvider: action((state, payload) => {
+        state.yProvider = payload;
+      }),
+      setHostSessionId: action((state, payload) => {
+        state.hostSessionId = payload;
+        if (payload === null) {
+          try {
+            state.ySharedDocs = state.ySharedDocs.delete(
+              0,
+              state.ySharedDocs.length
+            );
+          } catch (e) {}
+          if (state.yBinding) {
+            state.yBinding.destroy();
+          }
+          if (state.yProvider) {
+            state.yProvider.destroy();
+          }
+        }
+      }),
+
+      setJoinSessionId: action((state, payload) => {
+        state.joinSessionId = payload;
+        if (payload === null) {
+          state.ySharedDocs = state.ySharedDocs.delete(
+            0,
+            state.ySharedDocs.length
+          );
+          if (state.yBinding) {
+            state.yBinding.destroy();
+          }
+          if (state.yProvider) {
+            state.yProvider.destroy();
+          }
+        }
+      }),
+
+      setVizItem: action((state, payload) => {
+        state.vizItem = payload;
+      }),
+
       toggleAutoSave: action((state) => {
         state.isAutoSave = !state.isAutoSave;
       }),
@@ -37,15 +97,15 @@ const Store = createStore(
         state.isFullScreen = !state.isFullScreen;
       }),
 
-      toggleSidePanel: action(
-        (state, payload = { manual: false, newState: false }) => {
-          if (payload.manual) {
-            state.sidePanelState = payload.newState;
-          } else {
-            state.sidePanelState = !state.sidePanelState;
-          }
-        }
-      ),
+      setSidePanelState: action((state, payload) => {
+        state.sidePanelState = { ...state.sidePanelState, ...payload };
+
+        if (payload.left && state.leftPanelWidth === 0)
+          state.leftPanelWidth = 284;
+
+        if (payload.right && state.rightPanelWidth === 0)
+          state.rightPanelWidth = 284;
+      }),
 
       setCurrentFile: action((state, payload) => {
         state.currentFile = payload;
@@ -85,8 +145,20 @@ const Store = createStore(
       setActivityItem: action((state, payload) => {
         state.activityItem = payload;
       }),
-      setSidebarWidth: action((state, payload) => {
-        state.sidebarWidth = payload;
+
+      setLeftPanelWidth: action((state, payload) => {
+        state.leftPanelWidth = payload;
+        if (payload === 0)
+          state.sidePanelState = { ...state.sidePanelState, left: false };
+        else if (payload > 0 && !state.sidePanelState.left)
+          state.sidePanelState = { ...state.sidePanelState, left: true };
+      }),
+      setRightPanelWidth: action((state, payload) => {
+        state.rightPanelWidth = payload;
+        if (payload === 0)
+          state.sidePanelState = { ...state.sidePanelState, right: false };
+        else if (payload > 0 && !state.sidePanelState.right)
+          state.sidePanelState = { ...state.sidePanelState, right: true };
       }),
     },
     {
@@ -96,8 +168,13 @@ const Store = createStore(
         "selectedFileContent",
         "currentFile",
         "currentFileContent",
+        "yBinding",
+        "yProvider",
+        "ySharedDocs",
+        "hostSessionId",
+        "joinSessionId",
       ],
-      // storage: storage("diama-editor"),
+      storage: storage("diama-editor"),
     }
   )
 );

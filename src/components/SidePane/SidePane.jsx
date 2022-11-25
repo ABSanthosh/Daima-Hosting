@@ -7,7 +7,9 @@ function SidePane({ children }) {
   const containerRef = React.useRef(null);
   const dragRef = React.useRef(null);
   const setSidebarWidth = useStoreActions((actions) => actions.setSidebarWidth);
-  const toggleSidePanel = useStoreActions((action) => action.toggleSidePanel);
+  const setSidePanelState = useStoreActions(
+    (action) => action.setSidePanelState
+  );
   const setActiveItem = useStoreActions((actions) => actions.setActivityItem);
   const activeItem = useStoreState((state) => state.activityItem);
 
@@ -27,7 +29,7 @@ function SidePane({ children }) {
       document.body.style.cursor = "";
     },
     () => {
-      toggleSidePanel({ manual: true, state: false });
+      setSidePanelState({ left: false });
       setSidebarWidth(284);
       dragRef.current.style.backgroundColor = "";
       dragRef.current.style.animation = "";
