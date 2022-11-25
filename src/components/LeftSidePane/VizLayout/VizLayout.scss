@@ -1,7 +1,7 @@
 .VizLayout {
   @include box();
   @include make-flex($just: flex-start);
-
+  max-height: calc(100vh - 32px);
   &__sort {
     &--top,
     &--topCompare {
@@ -31,6 +31,11 @@
       @include make-flex($just: flex-start);
       gap: 14px;
       border-right: 1.5px solid var(--daima-tree-indentGuidesStroke);
+    }
+
+    &--pseudoCode {
+      @include box(calc(100% - 600px));
+      overflow: auto;
     }
 
     &--controlsRow {
