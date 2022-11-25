@@ -18,6 +18,9 @@ import { useEffect } from "react";
 import Split from "react-split-grid";
 import useDebounce from "../../hooks/useDebounce";
 import VizLayout from "../../components/LeftSidePane/VizLayout/VizLayout";
+import { WebrtcProvider } from "y-webrtc";
+import { monacoBindingModel } from "../../utils/MonacoModel";
+import { MonacoBinding } from "y-monaco";
 
 function Home() {
   const [code, setCode] = React.useState("");
@@ -31,6 +34,9 @@ function Home() {
 
   const leftPanelWidth = useStoreState((state) => state.leftPanelWidth);
   const rightPanelWidth = useStoreState((state) => state.rightPanelWidth);
+
+  const joinSessionId = useStoreState((state) => state.joinSessionId);
+  const hostSessionId = useStoreState((state) => state.hostSessionId);
 
   const setLeftPanelWidth = useStoreActions(
     (action) => action.setLeftPanelWidth
@@ -49,6 +55,38 @@ function Home() {
   const setSelectedFolderState = useStoreActions(
     (actions) => actions.setSelectedFolderState
   );
+  const setYProvider = useStoreActions((actions) => actions.setYProvider);
+  const setYBinding = useStoreActions((actions) => actions.setYBinding);
+  const yBinding = useStoreState((state) => state.yBinding);
+  const ySharedDocs = useStoreState((state) => state.ySharedDocs);
+
+  useEffect(() => {
+    if (joinSessionId !== null) {
+      ySharedDocs.observe(() => {
+        ySharedDocs.toArray().forEach((doc, index) => {
+          const yText = doc;
+          let path = doc.doc.share;
+          // path.delete("daima-editorList");
+          path = [...path.keys()][index + 1];
+
+          console.log(yText);
+          const { editor, neededModel } = monacoBindingModel(path);
+          // console.log(editor, neededModel);
+
+          if (yBinding) {
+            yBinding.destroy();
+          }
+          const newBinding = new MonacoBinding(
+            yText,
+            neededModel,
+            new Set([editor])
+          );
+          editor.setModel(neededModel);
+          setYBinding(newBinding);
+        });
+      });
+    }
+  });
 
   const keybindings = [
     {
@@ -129,6 +167,25 @@ function Home() {
     setGridTemplate(gridTemplateGenerator());
   }, [sidePanelState]);
 
+  useEffect(() => {
+    if (joinSessionId !== null || hostSessionId !== null) {
+      // try {
+      const room = joinSessionId || hostSessionId;
+      const yProvider = new WebrtcProvider(room, yDoc, {
+        signaling: [
+          "wss://signaling.yjs.dev",
+          "wss://y-webrtc-signaling-eu.herokuapp.com",
+          "wss://y-webrtc-signaling-us.herokuapp.com",
+        ],
+      });
+
+      setYProvider(yProvider);
+      // } catch (e) {}
+    } else {
+      const nullId = joinSessionId === null ? joinSessionId : hostSessionId;
+    }
+  }, [joinSessionId, hostSessionId]);
+
   return (
     <div className={`Workbench ${currentTheme}`}>
       <ToolBar />
@@ -156,64 +213,68 @@ function Home() {
               className="Workbench__bottom--middle"
               style={{
                 gridTemplateRows:
-                  selectedFiles.length > 0 ? "35px 22px 1fr" : "1fr",
+                  selectedFiles.length > 0 || joinSessionId
+                    ? "35px 22px 1fr"
+                    : "1fr",
               }}
             >
-              {selectedFiles.length > 0 && (
+              {(selectedFiles.length > 0 || joinSessionId) && (
                 <>
                   <Tabs folderStructure={folderStructure} />
                   <BreadCrumbs currentFile={currentFile} />
                   <MonacoEditor setCode={setCode} code={code} />
                 </>
               )}
-              {selectedFiles.length <= 0 && currentActivity !== "visualize" && (
-                <div className="Workbench__bottom--empty">
-                  <ul>
-                    <li>
-                      <p>Open a folder</p>
-                      <button
-                        onClick={async () => {
-                          const root = await CreateFolderMap();
-                          setSelectedFolderState(root);
-                        }}
-                      >
-                        <pre>Ctrl + Shift + O</pre>
-                      </button>
-                    </li>
-                    <li>
-                      <p>Toggle side panel</p>
-                      <button
-                        onClick={async () =>
-                          setSidePanelState({ left: !sidePanelState.left })
-                        }
-                      >
-                        <pre>Ctrl + B</pre>
-                      </button>
-                    </li>
-                    <li>
-                      <p>Switch theme</p>
-                      <button
-                        onClick={async () => {
-                          const themes = [
-                            "tomorrow-night-blue",
-                            "github",
-                            "blackboard",
-                          ];
-                          const currentThemeIndex =
-                            themes.indexOf(currentTheme);
-                          const nextThemeIndex =
-                            currentThemeIndex === themes.length - 1
-                              ? 0
-                              : currentThemeIndex + 1;
-                          setTheme(themes[nextThemeIndex]);
-                        }}
-                      >
-                        <pre>Ctrl + Alt + `</pre>
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-              )}
+              {selectedFiles.length <= 0 &&
+                currentActivity !== "visualize" &&
+                joinSessionId === null && (
+                  <div className="Workbench__bottom--empty">
+                    <ul>
+                      <li>
+                        <p>Open a folder</p>
+                        <button
+                          onClick={async () => {
+                            const root = await CreateFolderMap();
+                            setSelectedFolderState(root);
+                          }}
+                        >
+                          <pre>Ctrl + Shift + O</pre>
+                        </button>
+                      </li>
+                      <li>
+                        <p>Toggle side panel</p>
+                        <button
+                          onClick={async () =>
+                            setSidePanelState({ left: !sidePanelState.left })
+                          }
+                        >
+                          <pre>Ctrl + B</pre>
+                        </button>
+                      </li>
+                      <li>
+                        <p>Switch theme</p>
+                        <button
+                          onClick={async () => {
+                            const themes = [
+                              "tomorrow-night-blue",
+                              "github",
+                              "blackboard",
+                            ];
+                            const currentThemeIndex =
+                              themes.indexOf(currentTheme);
+                            const nextThemeIndex =
+                              currentThemeIndex === themes.length - 1
+                                ? 0
+                                : currentThemeIndex + 1;
+                            setTheme(themes[nextThemeIndex]);
+                          }}
+                        >
+                          <pre>Ctrl + Alt + `</pre>
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                )}
               {currentActivity === "visualize" && <VizLayout />}
             </div>
             <span
