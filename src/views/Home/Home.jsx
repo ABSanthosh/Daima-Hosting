@@ -55,34 +55,55 @@ function Home() {
   const setSelectedFolderState = useStoreActions(
     (actions) => actions.setSelectedFolderState
   );
+  const setSelectedFiles = useStoreActions(
+    (actions) => actions.setSelectedFiles
+  );
   const setYProvider = useStoreActions((actions) => actions.setYProvider);
   const setYBinding = useStoreActions((actions) => actions.setYBinding);
+  const setCurrentFile = useStoreActions((actions) => actions.setCurrentFile);
   const yBinding = useStoreState((state) => state.yBinding);
-  const ySharedDocs = useStoreState((state) => state.ySharedDocs);
+  // const ySharedDocs = useStoreState((state) => state.ySharedDocs);
+  const ySharedDocs = window.ySharedDocs;
+  const monaco = window.monaco;
 
   useEffect(() => {
     if (joinSessionId !== null) {
       ySharedDocs.observe(() => {
-        ySharedDocs.toArray().forEach((doc, index) => {
-          const yText = doc;
-          let path = doc.doc.share;
-          // path.delete("daima-editorList");
-          path = [...path.keys()][index + 1];
+        const exist = monaco.editor
+          .getModels()
+          .map((elem) => elem._associatedResource.path);
 
-          console.log(yText);
-          const { editor, neededModel } = monacoBindingModel(path);
-          // console.log(editor, neededModel);
-
-          if (yBinding) {
+        if (yBinding) {
+          try {
             yBinding.destroy();
+          } catch (err) {}
+        }
+
+        ySharedDocs.toArray().forEach((doc, index) => {
+          let path = doc.doc.share;
+          path = [...path.keys()][index + 1];
+          const yText = window.yDoc.getText(path);
+
+          const addedStructure = {
+            handler: "bindingHandler",
+            name: path.split("/").pop(),
+            type: "file",
+            ext: path.split(".").pop(),
+            path: path,
+            yText: yText,
+          };
+          setSelectedFiles(addedStructure);
+
+          if (!exist.includes("/" + path)) {
+            const { editor, neededModel } = monacoBindingModel(path);
+            setCurrentFile(addedStructure);
+            const newBinding = new MonacoBinding(
+              yText,
+              neededModel,
+              new Set([editor])
+            );
+            setYBinding(newBinding);
           }
-          const newBinding = new MonacoBinding(
-            yText,
-            neededModel,
-            new Set([editor])
-          );
-          editor.setModel(neededModel);
-          setYBinding(newBinding);
         });
       });
     }

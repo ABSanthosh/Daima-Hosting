@@ -13,7 +13,8 @@ function File({ folderStructure, depth }) {
   const setCurrentFile = useStoreActions((action) => action.setCurrentFile);
 
   const yBinding = useStoreState((state) => state.yBinding);
-  const ySharedDocs = useStoreState((state) => state.ySharedDocs);
+  // const ySharedDocs = useStoreState((state) => state.ySharedDocs);
+  const ySharedDocs = window.ySharedDocs;
   const setYSharedDocs = useStoreActions((action) => action.setYSharedDocs);
   const setYBinding = useStoreActions((action) => action.setYBinding);
 
@@ -49,21 +50,12 @@ function File({ folderStructure, depth }) {
         if (joinSessionId !== null || hostSessionId !== null) {
           const yDoc = window.yDoc;
           let newDoc;
-
-          if (
-            yDoc.getText(folderStructure.path + "/" + folderStructure.name)
-              ._length === 0
-          ) {
-            yDoc
-              .getText(folderStructure.path + "/" + folderStructure.name)
-              .insert(0, content);
-            newDoc = yDoc.getText(
-              folderStructure.path + "/" + folderStructure.name
-            );
+          console.log(folderStructure.path);
+          if (yDoc.getText(folderStructure.path)._length === 0) {
+            yDoc.getText(folderStructure.path).insert(0, content);
+            newDoc = yDoc.getText(folderStructure.path);
           } else {
-            newDoc = yDoc.getText(
-              folderStructure.path + "/" + folderStructure.name
-            );
+            newDoc = yDoc.getText(folderStructure.path);
           }
 
           const newBinding = new MonacoBinding(
@@ -73,12 +65,15 @@ function File({ folderStructure, depth }) {
           );
 
           if (![...ySharedDocs.toJSON()].includes(content)) {
-            console.log([...ySharedDocs.toJSON()])
-            ySharedDocs.push([newDoc]);
-            setYSharedDocs(ySharedDocs);
+            const newArray = [];
+            newArray.push(newDoc);
+            ySharedDocs.push(newArray);
           }
+
           if (yBinding) {
-            yBinding.destroy();
+            try {
+              yBinding.destroy();
+            } catch (err) {}
           }
           setYBinding(newBinding);
         }

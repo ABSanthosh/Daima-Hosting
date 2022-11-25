@@ -7,6 +7,7 @@ window.monaco = monaco;
 let yDoc = new Y.Doc();
 let ySharedDocs = yDoc.getArray("daima-editorList");
 window.yDoc = yDoc;
+window.ySharedDocs = ySharedDocs
 
 const Store = createStore(
   persist(
@@ -67,7 +68,6 @@ const Store = createStore(
             0,
             state.ySharedDocs.length
           );
-          console.log(debug(yDoc))
           if (state.yBinding) {
             state.yBinding.destroy();
           }
