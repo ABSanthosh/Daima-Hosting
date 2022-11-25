@@ -12,6 +12,9 @@ import {
 } from "../../../utils/VisualizerUtils/SortHelper";
 import FancyButton from "../../FancyButton/FancyButton";
 import FancySlider from "../../FancySlider/FancySlider";
+import BubbleSort from "../../pseudocode/pseudocode-bubble";
+import MergeSort from "../../pseudocode/pseudocode-merge";
+import QuickSort from "../../pseudocode/pseudocode-quicksort";
 import DijkstraGrid from "../components/DijkstraGrid/DijkstraGrid";
 import SortBlocks from "../components/SortBlocks/SortBlocks";
 import "./VizLayout.scss";
@@ -45,7 +48,7 @@ function VizLayout() {
   const [blockArray, setBlockArray] = useState(localArray);
   const [blockArray2, setBlockArray2] = useState(localArray);
   const [blockArray3, setBlockArray3] = useState(localArray);
-
+  const [selectedAlgo, setSelectedAlgo] = useState("");
   const [isCompare, setIsCompare] = useState(false);
 
   //=================== SORTING ===================
@@ -307,9 +310,30 @@ function VizLayout() {
               <h3>Algorithms</h3>
               {!isCompare ? (
                 <>
-                  <FancyButton onClick={mergeSort}>Merge Sort</FancyButton>
-                  <FancyButton onClick={quickSort}>Quick Sort</FancyButton>
-                  <FancyButton onClick={bubbleSort}>Bubble Sort</FancyButton>
+                  <FancyButton
+                    onClick={() => {
+                      mergeSort();
+                      setSelectedAlgo("merge");
+                    }}
+                  >
+                    Merge Sort
+                  </FancyButton>
+                  <FancyButton
+                    onClick={() => {
+                      quickSort();
+                      setSelectedAlgo("quick");
+                    }}
+                  >
+                    Quick Sort
+                  </FancyButton>
+                  <FancyButton
+                    onClick={() => {
+                      bubbleSort();
+                      setSelectedAlgo("bubble");
+                    }}
+                  >
+                    Bubble Sort
+                  </FancyButton>
                 </>
               ) : (
                 <FancyButton
@@ -414,6 +438,11 @@ function VizLayout() {
                   }}
                 />
               </div>
+            </div>
+            <div className="VizLayout__sort--pseudoCode">
+              {selectedAlgo === "bubble" && <BubbleSort />}
+              {selectedAlgo === "merge" && <MergeSort />}
+              {selectedAlgo === "quick" && <QuickSort />}
             </div>
           </div>
         </>
