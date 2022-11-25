@@ -149,25 +149,27 @@ function VizLayout() {
 
   const recalculateGrid = () => {
     const container = document.querySelector(".VizLayout__pathBox--top");
-    const clientWidth = container.clientWidth;
-    const clientHeight = container.clientHeight;
-    const numberOfNodesRow = Math.floor(clientHeight / 30);
-    const numberOfNodesCol = Math.floor(clientWidth / 30);
+    if (container) {
+      const clientWidth = container.clientWidth;
+      const clientHeight = container.clientHeight;
+      const numberOfNodesRow = Math.floor(clientHeight / 30);
+      const numberOfNodesCol = Math.floor(clientWidth / 30);
 
-    setSTART_NODE_ROW(Math.floor(numberOfNodesRow / 2));
-    setSTART_NODE_COL(Math.floor(numberOfNodesCol * 0.15));
-    setFINISH_NODE_ROW(Math.floor(numberOfNodesRow / 2));
-    setFINISH_NODE_COL(Math.floor(numberOfNodesCol * 0.85));
-    const grid = getInitialGrid(
-      numberOfNodesRow,
-      numberOfNodesCol,
-      Math.floor(numberOfNodesRow / 2),
-      Math.floor(numberOfNodesCol * 0.15),
-      Math.floor(numberOfNodesRow / 2),
-      Math.floor(numberOfNodesCol * 0.85)
-    );
-    resetGrid();
-    setBasicGrid(grid);
+      setSTART_NODE_ROW(Math.floor(numberOfNodesRow / 2));
+      setSTART_NODE_COL(Math.floor(numberOfNodesCol * 0.15));
+      setFINISH_NODE_ROW(Math.floor(numberOfNodesRow / 2));
+      setFINISH_NODE_COL(Math.floor(numberOfNodesCol * 0.85));
+      const grid = getInitialGrid(
+        numberOfNodesRow,
+        numberOfNodesCol,
+        Math.floor(numberOfNodesRow / 2),
+        Math.floor(numberOfNodesCol * 0.15),
+        Math.floor(numberOfNodesRow / 2),
+        Math.floor(numberOfNodesCol * 0.85)
+      );
+      resetGrid();
+      setBasicGrid(grid);
+    }
   };
 
   useEffect(() => {
@@ -182,16 +184,19 @@ function VizLayout() {
         }
       });
     });
+    if (container && parent) {
+      parent.addEventListener("resize", recalculateGrid);
 
-    parent.addEventListener("resize", recalculateGrid);
-
-    observer.observe(container, {
-      attributes: true,
-    });
+      observer.observe(container, {
+        attributes: true,
+      });
+    }
 
     return () => {
-      observer.disconnect();
-      parent.removeEventListener("resize", recalculateGrid);
+      if (container && parent) {
+        observer.disconnect();
+        parent.removeEventListener("resize", recalculateGrid);
+      }
     };
   }, []);
 
