@@ -2,6 +2,8 @@ import { useStoreActions, useStoreState } from "easy-peasy";
 import React from "react";
 import "./Tabs.scss";
 import SetiMap from "../../assets/Maps/SetiMap.json";
+import { MonacoBinding } from "y-monaco";
+import { monacoBindingModel } from "../../utils/MonacoModel";
 
 function Tabs() {
   const monaco = window.monaco;
@@ -13,6 +15,9 @@ function Tabs() {
   const removeSelectedFile = useStoreActions(
     (action) => action.removeSelectedFile
   );
+  const setYBinding = useStoreActions((actions) => actions.setYBinding);
+  const yBinding = useStoreState((state) => state.yBinding);
+  const hostSessionId = useStoreState((state) => state.hostSessionId);
 
   return (
     <ul className="TabsWrapper">
@@ -42,15 +47,53 @@ function Tabs() {
               }
               style={{
                 color: iconChar !== undefined ? iconChar.fontColor : "",
+                paddingRight:
+                  item.handler !== "bindingHandler" ? "32px" : "10px",
               }}
               onClick={async () => {
                 editor.setModel(model);
                 setCurrentFile(item);
+
+                if (item.handler === "bindingHandler") {
+                  if (yBinding) {
+                    try {
+                      yBinding.destroy();
+                    } catch (err) {}
+                  }
+                  const { editor, neededModel } = monacoBindingModel(item.path);
+
+                  const newBinding = new MonacoBinding(
+                    item.yText,
+                    neededModel,
+                    new Set([editor])
+                  );
+                  setYBinding(newBinding);
+                }
+
+                if (hostSessionId !== null) {
+                  if (yBinding) {
+                    try {
+                      yBinding.destroy();
+                    } catch (err) {}
+                  }
+
+                  const yText = window.yDoc.getText(item.path);
+                  console.log(yText);
+                  const newBinding = new MonacoBinding(
+                    yText,
+                    model,
+                    new Set([editor])
+                  );
+                  setYBinding(newBinding);
+                }
               }}
             >
               <p>{item.name}</p>
             </span>
             <span
+              style={{
+                display: item.handler !== "bindingHandler" ? "block" : "none",
+              }}
               data-icon={String.fromCharCode(60022)}
               onClick={() => {
                 removeSelectedFile(item);
@@ -75,6 +118,7 @@ function Tabs() {
                 }
               }}
             />
+            {/* )} */}
           </li>
         );
       })}

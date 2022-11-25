@@ -46,6 +46,6 @@ export function monacoBindingModel(path) {
     .getModels()
     .find((model) => model._associatedResource.path === "/" + path);
 
-  // editor.setModel(neededModel);
+  editor.setModel(neededModel);
   return { editor, neededModel };
 }

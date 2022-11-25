@@ -1,18 +1,26 @@
 import { createStore, action, persist, debug } from "easy-peasy";
-import storage from "../utils/StorageEngine";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+import storage from "../utils/StorageEngine";
+import * as Y from "yjs";
 
 window.monaco = monaco;
+let yDoc = new Y.Doc();
+let ySharedDocs = yDoc.getArray("daima-editorList");
+window.yDoc = yDoc;
+window.ySharedDocs = ySharedDocs;
 
 const Store = createStore(
   persist(
     {
       // monaco: monaco,
       theme: "github",
-      activityItem: "explorer",
       vizItem: "path", // sort, path
       leftPanelWidth: 284,
       rightPanelWidth: 284,
+      activityItem: "explorer",
+      ySharedDocs: ySharedDocs,
+      yProvider: null,
+      yBinding: null,
       sidePanelState: { left: true, right: false },
 
       selectedFolder: null,
@@ -27,6 +35,52 @@ const Store = createStore(
       isSaving: false,
       isFullScreen: false,
       debounce: 1000,
+
+      hostSessionId: null,
+      joinSessionId: null,
+
+      setYSharedDocs: action((state, payload) => {
+        state.ySharedDocs = payload;
+      }),
+      setYBinding: action((state, payload) => {
+        state.yBinding = payload;
+      }),
+      setYProvider: action((state, payload) => {
+        state.yProvider = payload;
+      }),
+      setHostSessionId: action((state, payload) => {
+        state.hostSessionId = payload;
+        if (payload === null) {
+          try {
+            state.ySharedDocs = state.ySharedDocs.delete(
+              0,
+              state.ySharedDocs.length
+            );
+          } catch (e) {}
+          if (state.yBinding) {
+            state.yBinding.destroy();
+          }
+          if (state.yProvider) {
+            state.yProvider.destroy();
+          }
+        }
+      }),
+
+      setJoinSessionId: action((state, payload) => {
+        state.joinSessionId = payload;
+        if (payload === null) {
+          state.ySharedDocs = state.ySharedDocs.delete(
+            0,
+            state.ySharedDocs.length
+          );
+          if (state.yBinding) {
+            state.yBinding.destroy();
+          }
+          if (state.yProvider) {
+            state.yProvider.destroy();
+          }
+        }
+      }),
 
       setVizItem: action((state, payload) => {
         state.vizItem = payload;
@@ -114,8 +168,13 @@ const Store = createStore(
         "selectedFileContent",
         "currentFile",
         "currentFileContent",
+        "yBinding",
+        "yProvider",
+        "ySharedDocs",
+        "hostSessionId",
+        "joinSessionId",
       ],
-      // storage: storage("diama-editor"),
+      storage: storage("diama-editor"),
     }
   )
 );

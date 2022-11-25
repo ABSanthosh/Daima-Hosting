@@ -1,13 +1,22 @@
-import { useStoreActions } from "easy-peasy";
-import React, { useState } from "react";
+import { useStoreActions, useStoreState } from "easy-peasy";
+import React, { useState, useEffect } from "react";
 import { getFileContents } from "../../utils/FileAccess";
 import "./FolderTree.scss";
 import SetiMap from "../../assets/Maps/SetiMap.json";
 import { handleEditorContent } from "../../utils/MonacoModel";
+import { MonacoBinding } from "y-monaco";
+
+import * as Y from "yjs";
 
 function File({ folderStructure, depth }) {
   const setSelectedFiles = useStoreActions((action) => action.setSelectedFiles);
   const setCurrentFile = useStoreActions((action) => action.setCurrentFile);
+
+  const yBinding = useStoreState((state) => state.yBinding);
+  // const ySharedDocs = useStoreState((state) => state.ySharedDocs);
+  const ySharedDocs = window.ySharedDocs;
+  const setYSharedDocs = useStoreActions((action) => action.setYSharedDocs);
+  const setYBinding = useStoreActions((action) => action.setYBinding);
 
   const setCurrentFileChanged = useStoreActions(
     (action) => action.setCurrentFileChanged
@@ -17,6 +26,9 @@ function File({ folderStructure, depth }) {
   const iconOctal = String.fromCharCode(
     parseInt(iconChar?.fontCharacter.replace("\\", ""), 16)
   );
+
+  const joinSessionId = useStoreState((state) => state.joinSessionId);
+  const hostSessionId = useStoreState((state) => state.hostSessionId);
 
   return (
     <div
@@ -30,7 +42,41 @@ function File({ folderStructure, depth }) {
         setCurrentFile(folderStructure);
         const content = await getFileContents(folderStructure.handler);
         setCurrentFileChanged(false);
-        handleEditorContent(folderStructure, content);
+        const { editor, neededModel } = handleEditorContent(
+          folderStructure,
+          content
+        );
+
+        if (joinSessionId !== null || hostSessionId !== null) {
+          const yDoc = window.yDoc;
+          let newDoc;
+          console.log(folderStructure.path);
+          if (yDoc.getText(folderStructure.path)._length === 0) {
+            yDoc.getText(folderStructure.path).insert(0, content);
+            newDoc = yDoc.getText(folderStructure.path);
+          } else {
+            newDoc = yDoc.getText(folderStructure.path);
+          }
+
+          const newBinding = new MonacoBinding(
+            newDoc,
+            neededModel,
+            new Set([editor])
+          );
+
+          if (![...ySharedDocs.toJSON()].includes(content)) {
+            const newArray = [];
+            newArray.push(newDoc);
+            ySharedDocs.push(newArray);
+          }
+
+          if (yBinding) {
+            try {
+              yBinding.destroy();
+            } catch (err) {}
+          }
+          setYBinding(newBinding);
+        }
       }}
     >
       <div
