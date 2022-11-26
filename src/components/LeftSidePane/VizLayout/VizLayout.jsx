@@ -494,7 +494,7 @@ function VizLayout() {
       {vizItem === "knapsack" && <Knapsack />}
       {vizItem === "heaps" && <Heaps />}
       {vizItem === "traveling" && <Traveling />}
-      {vizItem === "heaps" && <Traveling />}
+      {vizItem === "astar" && <Traveling />}
     </div>
   );
 }
