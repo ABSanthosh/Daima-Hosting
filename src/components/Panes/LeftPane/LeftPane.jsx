@@ -110,6 +110,7 @@ function LeftPane() {
 
           {currentActivity === "visualize" && (
             <div className="Workbench__content--empty">
+              <h2>Visualize Algos</h2>
               <FancyButton
                 onClick={() => setVizItem("sort")}
                 innerText="Sorting"
@@ -118,6 +119,39 @@ function LeftPane() {
                 onClick={() => setVizItem("path")}
                 innerText="Path Finding"
               />
+              <br />
+              <h2>Learn Algos</h2>
+              <FancyButton
+                onClick={() => setVizItem("binarySearch")}
+                innerText="Binary Search"
+              />
+              <FancyButton
+                onClick={() => setVizItem("minSpanningTree")}
+                innerText="Min Spanning Tree"
+              />
+              <FancyButton
+                onClick={() => setVizItem("primAlgo")}
+                innerText="Prim's Algo"
+              />
+              <FancyButton
+                onClick={() => setVizItem("kruskal")}
+                innerText="Kruskal's Algo"
+              />
+              <FancyButton
+                onClick={() => setVizItem("knapsack")}
+                innerText="Knapsack"
+              />
+              <FancyButton
+                onClick={() => setVizItem("heaps")}
+                innerText="Heaps"
+              />{" "}
+              <br />
+              <h2>Coming Soon</h2>
+              <FancyButton
+                onClick={() => setVizItem("traveling")}
+                innerText="Traveling Sales Man"
+              />{" "}
+              <FancyButton onClick={() => setVizItem("astar")} innerText="A*" />
             </div>
           )}
         </div>

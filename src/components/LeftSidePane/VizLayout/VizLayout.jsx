@@ -12,6 +12,15 @@ import {
 } from "../../../utils/VisualizerUtils/SortHelper";
 import FancyButton from "../../FancyButton/FancyButton";
 import FancySlider from "../../FancySlider/FancySlider";
+import {
+  BinarySearchMarkdown,
+  Heaps,
+  Knapsack,
+  Kruskal,
+  MinSpanningTree,
+  PrimAlgo,
+  Traveling,
+} from "../../LearningMaterial/Material";
 import BubbleSort from "../../pseudocode/pseudocode-bubble";
 import MergeSort from "../../pseudocode/pseudocode-merge";
 import QuickSort from "../../pseudocode/pseudocode-quicksort";
@@ -269,7 +278,13 @@ function VizLayout() {
   }
 
   return (
-    <div className={`VizLayout VizLayout__${vizItem}`}>
+    <div
+      className={`VizLayout VizLayout__${vizItem}`}
+      style={{
+        padding: vizItem !== "sort" && vizItem !== "path" ? "20px" : "",
+        overflowY: vizItem !== "sort" && vizItem !== "path" ? "auto" : "",
+      }}
+    >
       {vizItem === "sort" && (
         <>
           <div className={`VizLayout__sort--top`}>
@@ -471,6 +486,15 @@ function VizLayout() {
           </div>
         </div>
       )}
+
+      {vizItem === "binarySearch" && <BinarySearchMarkdown />}
+      {vizItem === "minSpanningTree" && <MinSpanningTree />}
+      {vizItem === "primAlgo" && <PrimAlgo />}
+      {vizItem === "kruskal" && <Kruskal />}
+      {vizItem === "knapsack" && <Knapsack />}
+      {vizItem === "heaps" && <Heaps />}
+      {vizItem === "traveling" && <Traveling />}
+      {vizItem === "heaps" && <Traveling />}
     </div>
   );
 }
